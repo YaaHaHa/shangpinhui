@@ -2,23 +2,26 @@
   <div id="app">
     <Header />
     <router-view></router-view>
-    <Footer />
+    <Footer v-show="!$route.meta.isHiddenFooter" />
   </div>
 </template>
 
 <script>
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { reqCategoryList } from "./api";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Header,
-    Footer
+    Footer,
+  },
+  mounted(){
+    reqCategoryList();
   }
-}
+};
 </script>
 
 <style>
-
 </style>
