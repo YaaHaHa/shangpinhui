@@ -8,10 +8,14 @@ import TypeNav from './components/TypeNav'
 import router from './router'
 Vue.config.productionTip = false
 
+// 引入vuex数据管理模块
+import store from './store'
+
 // 注册全局组件TypeNav
 Vue.component(TypeNav.name,TypeNav);
 new Vue({
   el:'#app',
   render: h => h(App),
   router,
+  store
 })

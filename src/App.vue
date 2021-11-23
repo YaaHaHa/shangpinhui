@@ -9,7 +9,9 @@
 <script>
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { reqCategoryList } from "./api";
+
+
+
 
 export default {
   name: "App",
@@ -17,9 +19,13 @@ export default {
     Header,
     Footer,
   },
-  mounted(){
-    reqCategoryList();
-  }
+  mounted() {
+    /* reqCategoryList().then((result) => {
+      console.log('result',result);
+    }); */
+    // 请求获取三级分类数据，这里请求，并不是在这里读取数据
+    this.$store.dispatch('home/getCategoryList');
+  },
 };
 </script>
 

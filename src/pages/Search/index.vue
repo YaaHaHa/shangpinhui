@@ -1,7 +1,7 @@
 <template>
   <div id="search">
     <h1>Search</h1>
-    <h1>{{$route.params.keyword}}</h1>
+    <h1>{{$route.query}}</h1>
   </div>
 </template>
 
