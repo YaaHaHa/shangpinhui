@@ -67,3 +67,19 @@ axios.interceptors.response.use(
         */
     }
 > 因为这是链式调用的，实质是.then()的链式。在获取用axios请求拿到的数据时，用async...await直接拿成功的response方便，如果不报错或返回reject，请求失败的信息也被await拿到了。请求失败在拦截器中处理了更好！
+
+### day3的TypeNav的交互(与用户)效果
+1. 鼠标悬浮突出显示。数据驱动显示，设置currentIndex与当前的idnex是否匹配，通过onmouseenter改current=index然后样式被匹配上。通过onmouseleave改currentIndex破坏样式匹配。
+   1. 注意：鼠标移到哪取消突出显示？如果有特殊的业务要求，需要改html结构，让需要的放在一个div里
+   2. 用户移动到每个标签上都要触发回调展示三级列表，会造成页面卡顿，必须用函数节流技术。引入了lodash库创建一个节流函数。
+
+
+>`_.throttle(func, [wait=0], [options=])`创建一个节流函数，在 `wait` 秒内最多执行 `func` 一次的函数。 该函数提供一个 `cancel` 方法取消延迟的函数调用以及 `flush` 方法立即调用。 可以提供一个 `options` 对象决定如何调用 `func` 方法， `options.leading` 与|或 `options.trailing` 决定 `wait` 前后如何触发。 `func` 会传入最后一次传入的参数给这个函数。 随后调用的函数返回是最后一次 `func` 调用的结果。
+
+注意: 如果 `leading` 和 `trailing` 都设定为 `true` 则 `func` 允许 `trailing` 方式调用的条件为: 在 `wait` 期间多次调用。
+
+如果 `wait` 为 0 并且 `leading` 为 `false`, `func`调用将被推迟到下一个点，类似`setTimeout`为0的超时。
+
+
+### 创建Swiper对象
+为什么不使用案例上的类选择器？差异化，每一个轮播器的配置不一样，通过`ref`给不同的轮播器打上标识。用id不行，因为可能重复

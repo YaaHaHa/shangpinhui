@@ -10,7 +10,7 @@
         </li>
         <li class="banner">
           <img src="./images/today01.png" />
-        </li> 
+        </li>
         <li class="banner">
           <img src="./images/today02.png" />
         </li>

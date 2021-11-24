@@ -3,12 +3,18 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <!-- 
+          为什么要加ref?因为如果不叫ref，在创建Swiper实例的时候，被选中的都是一样的类，不同的组件应该有他自己的
+          Swiper轮播配置，所以加ref以便于给每一个轮播器自己的配置。
+
+
+         -->
+        <div class="swiper-container" ref="listContentCarousel">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <img src="./images/banner1.jpg" />
             </div>
-           <!--  <div class="swiper-slide">
+            <div class="swiper-slide">
               <img src="./images/banner2.jpg" />
             </div>
             <div class="swiper-slide">
@@ -16,7 +22,7 @@
             </div>
             <div class="swiper-slide">
               <img src="./images/banner4.jpg" />
-            </div> -->
+            </div>
           </div>
           <!-- 如果需要分页器 -->
           <div class="swiper-pagination"></div>
@@ -100,8 +106,35 @@
 </template>
 
 <script>
+// 引入swiper
+import Swiper from "swiper";
+
 export default {
   name: "ListContainer",
+  mounted() {
+    // swiper对象必须要在列表显示完成后再创建，不然没有效果
+    new Swiper(this.$refs.listContentCarousel, {
+      direction: "horizontal", // 垂直切换选项
+      loop: true, // 循环模式选项
+      speed: 300, //切换速度
+      autoplay: {
+        //自动播放配置对象
+        delay: 3000, //延迟3秒自动播放下一页
+        disableOnInteraction: false,  //手动操作后是否暂停轮播
+      },
+
+      // 如果需要分页器
+      pagination: {
+        el: ".swiper-pagination",
+      },
+
+      // 如果需要前进后退按钮
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  },
 };
 </script>
 

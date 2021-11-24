@@ -1,7 +1,6 @@
 <template>
   <div id="search">
-    <h1>Search</h1>
-    <h1>{{$route.query}}</h1>
+    <type-nav/>
   </div>
 </template>
 
@@ -11,5 +10,3 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-</style>>
