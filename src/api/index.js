@@ -18,3 +18,13 @@ export function reqCategoryList() {
 
     })
 }
+
+/* 
+  首页广告轮播
+    /api/cms/banner
+    GET
+    参数：无
+
+*/
+// export const reqCarouselData = () => ajax.get('/api/cms/banner');  因为二次封装就制定了baseURL为/api
+export const reqCarouselData = () => ajax('/cms/banner')

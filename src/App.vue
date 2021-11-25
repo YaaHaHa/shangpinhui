@@ -25,6 +25,10 @@ export default {
     }); */
     // 请求获取三级分类数据，这里请求，并不是在这里读取数据
     this.$store.dispatch('home/getCategoryList');
+
+
+    // 利用vuex获取数据，数据保存在vuex的home模块的homeBannerData
+    this.$store.dispatch('home/getCarouselData');
   },
 };
 </script>

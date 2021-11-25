@@ -11,8 +11,11 @@ Vue.config.productionTip = false
 // 引入vuex数据管理模块
 import store from './store'
 
-// 引入swiper的样式
-import 'swiper/css/swiper.css'
+
+import './pluins/swiper'    //加载swiper配置  
+
+
+
 
 // 注册全局组件TypeNav
 Vue.component(TypeNav.name,TypeNav);

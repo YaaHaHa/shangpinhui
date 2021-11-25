@@ -9,20 +9,32 @@
 
 
          -->
+        <div class="swiper-container" ref="listContentCarousel">
+          <div class="swiper-wrapper">
+            <div
+              class="swiper-slide"
+              v-for="bannerItem of homeBannerData"
+              :key="bannerItem.id"
+            >
+              <img :src="bannerItem.imageUrl" />
+            </div>
+            <!-- <div class="swiper-slide">
+              <img src="./images/banner2.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img src="./images/banner3.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img src="./images/banner4.jpg" />
+            </div> -->
+          </div>
+          <!-- 如果需要分页器 -->
+          <div class="swiper-pagination"></div>
 
-        <!-- 通过文档查看使用vue-awsome-swiper -->
-        <swiper ref="listContentCarousel" :options="swiperOptions">
-          <swiper-slide
-            v-for="bannerItem of homeBannerData"
-            :key="bannerItem.id"
-          >
-            <img :src="bannerItem.imageUrl" />
-          </swiper-slide>
-          <div class="swiper-pagination" slot="pagination"></div>
           <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev" slot="button-prev"></div>
-          <div class="swiper-button-next" slot="button-next"></div>
-        </swiper>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
       </div>
       <div class="right">
         <div class="news">
@@ -104,34 +116,49 @@ import Swiper from "swiper";
 
 export default {
   name: "ListContainer",
-  data() {
-    return {
-      swiperOptions:  {
-        direction: "horizontal", // 垂直切换选项
-        loop: true, // 循环模式选项
-        speed: 300, //切换速度
-        autoplay: {
-          //自动播放配置对象
-          delay: 3000, //延迟3秒自动播放下一页
-          disableOnInteraction: false, //手动操作后是否暂停轮播
-        },
 
-        // 如果需要分页器
-        pagination: {
-          el: ".swiper-pagination",
-        },
-
-        // 如果需要前进后退按钮
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      },
-    };
-  },
   computed: {
     // 映射vuex中的数据
     ...mapState({ homeBannerData: (state) => state.home.homeBannerData }),
+  },
+  mounted() {
+    /* setTimeout(()=>{
+      console.log(this.homeBannerData);
+    },1000) */
+  },
+  /* 
+  在列表数据已经有了, 且已经更新显示了?
+  数据变化后 ==> 同步调用监视的回调 => 最后异步更新界面
+  watch: 监视bannerList, 就可以知道有数据了
+  nextTick: 界面更新后执行回调
+  */
+  watch: {
+    homeBannerData() {
+      this.$nextTick(() => {
+        // swiper对象必须要在列表显示完成后再创建，不然没有效果
+        new Swiper(this.$refs.listContentCarousel, {
+          direction: "horizontal", // 垂直切换选项
+          loop: true, // 循环模式选项
+          speed: 300, //切换速度
+          autoplay: {
+            //自动播放配置对象
+            delay: 3000, //延迟3秒自动播放下一页
+            disableOnInteraction: false, //手动操作后是否暂停轮播
+          },
+
+          // 如果需要分页器
+          pagination: {
+            el: ".swiper-pagination",
+          },
+
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      });
+    },
   },
 };
 </script>
