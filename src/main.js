@@ -13,7 +13,7 @@ import store from './store'
 
 
 import './pluins/swiper'    //加载swiper配置  
-
+import './mocks/mockServer' //加载mock,也就是说拉过来执行一下
 
 
 

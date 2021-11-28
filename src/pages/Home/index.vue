@@ -28,6 +28,10 @@ export default {
       Like,
       Floor,
       Brand
-    }
+    },
+    mounted() {
+      this.$store.dispatch('home/getRecommendList');//调用dispatch发请求去往vuex中存数据今日列表请求数据
+      this.$store.dispatch('home/getFloorsList');//楼层数据
+    },
 }
 </script>

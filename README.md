@@ -83,3 +83,12 @@ axios.interceptors.response.use(
 
 ### 创建Swiper对象
 为什么不使用案例上的类选择器？差异化，每一个轮播器的配置不一样，通过`ref`给不同的轮播器打上标识。用id不行，因为可能重复
+
+### Mock是不会真正发送请求的，所以NETWORD栏看不到，且只能通过代码实现，代码写发送请求，然后就被拦下啦
+
+Mock.mock( rurl?, rtype?, template|function( options ) )
+rul:表示需要拦截的 URL,可以是 URL 字符串或 URL 正则
+rtype:表示需要拦截的 Ajax 请求类型
+template:请求要返回的模拟数据
+function:执行结果作为模拟数据返回
+options:指向本次请求的 Ajax 选项集，含有 url、type 和 body 三个属性，参见 XMLHttpRequest 规范

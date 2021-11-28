@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数防抖与节流</title>
+    <style>
+        .box {
+            width: 600px;
+            height: 300px;
+            margin: 200px auto;
+            background-color: #cbcbcb;
+            font-size: 200px;
+            line-height: 300px;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+    <script type="text/javascript">
+        window.onload = function () {
+            const box = document.querySelector('.box');
+            box.n = 1;
+            let timer;  //定时器标识
+            function basic() {
+                box.innerHTML = box.n++;
+            }
+
+            /*             function debounce(func, wait) {
+                            let timer;
+                            return function () {
+                                let context = this; // 注意 this 指向
+                                let args = arguments; // arguments中存着e
+            
+                                if (timer) clearTimeout(timer);
+            
+                                timer = setTimeout(() => {
+                                    func.apply(this, args)
+                                }, wait)
+                            }
+                        } */
+
+
+
+
+            /* 
+                非立即执行
+                触发事件后函数不会立即执行，而是在 n 秒后执行，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+            
+            */
+            function debounceAfter() {
+                // let timer;   timer怎么能写在这里？？？每次调用debounce都会重置，每次下面的if都进不去
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(() => {
+                    console.log('我debounced执行了！！');
+                    box.innerHTML = box.n++;
+                }, 1000)
+
+            }
+            /* 
+            立刻执行
+            触发事件后函数立即执行，然而在n秒内不触发事件才能继续执行函数的结果，
+        
+        */
+            // 立即执行版
+            function debounce(func, wait) {
+                let timer;
+                return function () {
+                    let context = this; // 这边的 this 指向谁?
+                    let args = arguments; // arguments中存着e
+
+                    if (timer) clearTimeout(timer);
+
+                    let callNow = !timer;
+
+                    timer = setTimeout(() => {
+                        timer = null;
+                    }, wait)
+
+                    if (callNow) func.apply(context, args);
+                }
+            }
+            function debounceNow() {
+                // 如果当前timer有值，说明已经开启过定时器，换句话说已经不是第一次执行这个回调函数
+                if (timer) clearTimeout(timer);
+                console.log(timer);
+                let callNow = !timer
+                timer = setTimeout(() => {
+                    timer = null;
+                }, 1000)
+                if (callNow) box.innerHTML = box.n++;
+            }
+
+            // box.onmousemove = debounce(basic,1000);
+            box.onmousemove = debounceNow;
+        }
+
+    </script>
+</body>
+
+</html>

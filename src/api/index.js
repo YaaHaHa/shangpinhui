@@ -4,19 +4,19 @@
   函数返回的是promise对象？因为请求是异步的，数据也是异步过来的。直接返回数据行不通，为了方便取出异步的结果返回Promise
 */
 import ajax from './ajax.js'
-
+import mockAjax from './mockAjax'
 /* 
 首页三级分类
 /api/product/getBaseCategoryList  GET
 */
 export function reqCategoryList() {
-    // return ajax.get('/product/getBaseCategoryList');
-    // return ajax('/product/getBaseCategoryList'); 
-    return ajax({
-        url: '/product/getBaseCategoryList',
-        // method: 'get'
+  // return ajax.get('/product/getBaseCategoryList');
+  // return ajax('/product/getBaseCategoryList'); 
+  return ajax({
+    url: '/product/getBaseCategoryList',
+    // method: 'get'
 
-    })
+  })
 }
 
 /* 
@@ -28,3 +28,13 @@ export function reqCategoryList() {
 */
 // export const reqCarouselData = () => ajax.get('/api/cms/banner');  因为二次封装就制定了baseURL为/api
 export const reqCarouselData = () => ajax('/cms/banner')
+
+// 获取mock模拟的今日推荐数据
+export function reqRecommends() {
+  return mockAjax('/recommends');
+}
+
+// 获取mock模拟的楼层数据
+export function reqFloors () {
+  return mockAjax('/floors');
+}

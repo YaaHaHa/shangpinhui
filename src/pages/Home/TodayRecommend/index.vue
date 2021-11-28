@@ -8,17 +8,11 @@
             <h3>今日推荐</h3>
           </div>
         </li>
-        <li class="banner">
-          <img src="./images/today01.png" />
-        </li>
-        <li class="banner">
-          <img src="./images/today02.png" />
-        </li>
-        <li class="banner">
-          <img src="./images/today03.png" />
-        </li>
-        <li class="banner">
-          <img src="./images/today04.png" />
+        <li class="banner" v-for="item in recommendList" :key="item.id">
+          <!-- 一定要注意，由于这里的数据是由mock模拟出来的/images/today02.png，
+          解析时就去自己的目录下找，因为闭环环境，所以记得把资源放public文件下面
+          -->
+          <img :src="item.imageUrl" />
         </li>
       </ul>
     </div>
@@ -26,8 +20,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: "TodayRecommend",
+  computed:{
+    // ...mapState('home',['recommendList'])
+    ...mapState({
+      recommendList: state => state.home.recommendList
+      })
+    
+  }
 };
 </script>
 
