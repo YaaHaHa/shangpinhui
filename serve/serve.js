@@ -1,8 +1,13 @@
 const express = require('express');
 
 const app = express();
-
-const BaseCategoryLIst={
+// 引入参数解析模块
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json())
+// 主页分类列表
+const BaseCategoryLIst = {
     "code": 200,
     "message": "成功",
     "data": [
@@ -266,60 +271,343 @@ const BaseCategoryLIst={
     "ok": true
 }
 
-const HomeCarouselBannerData={
+// Home页面轮播图数据
+const HomeCarouselBannerData = {
     "code": 200,
     "message": "成功",
     "data": [
-      {
-        "id": 1,
-        "title": "小米电视4A 70英寸 4K超高清 HDR 二级能效 2GB+16GB L70M5-4A 内置小爱",
-        "imageUrl": "http://localhost:8000/images/banner1.jpg",
-        "linkUrl": "http://item.atguigu.cn/21.html",
-        "sort": 0
-      },
-      {
-        "id": 3,
-        "title": "test",
-        "imageUrl": "http://localhost:8000/images/banner2.jpg",
-        "linkUrl": "http://item.atguigu.cn/21.html",
-        "sort": 0
-      },
-      {
-        "id": 2,
-        "title": "华为 HUAWEI P40 麒麟990 5G SoC芯片 5000万超感知徕卡三摄",
-        "imageUrl": "http://localhost:8000/images/banner3.jpg",
-        "linkUrl": "http://item.atguigu.cn/16.html",
-        "sort": 1
-      },
-      {
-        "id": 4,
-        "title": "华为 HUAWEI P40 麒麟990 5G SoC芯片 5000万超感知徕卡三摄",
-        "imageUrl": "http://localhost:8000/images/banner4.jpg",
-        "linkUrl": "http://item.atguigu.cn/16.html",
-        "sort": 1
-      }
+        {
+            "id": 1,
+            "title": "小米电视4A 70英寸 4K超高清 HDR 二级能效 2GB+16GB L70M5-4A 内置小爱",
+            "imageUrl": "http://localhost:8000/images/banner1.jpg",
+            "linkUrl": "http://item.atguigu.cn/21.html",
+            "sort": 0
+        },
+        {
+            "id": 3,
+            "title": "test",
+            "imageUrl": "http://localhost:8000/images/banner2.jpg",
+            "linkUrl": "http://item.atguigu.cn/21.html",
+            "sort": 0
+        },
+        {
+            "id": 2,
+            "title": "华为 HUAWEI P40 麒麟990 5G SoC芯片 5000万超感知徕卡三摄",
+            "imageUrl": "http://localhost:8000/images/banner3.jpg",
+            "linkUrl": "http://item.atguigu.cn/16.html",
+            "sort": 1
+        },
+        {
+            "id": 4,
+            "title": "华为 HUAWEI P40 麒麟990 5G SoC芯片 5000万超感知徕卡三摄",
+            "imageUrl": "http://localhost:8000/images/banner4.jpg",
+            "linkUrl": "http://item.atguigu.cn/16.html",
+            "sort": 1
+        }
     ],
     "ok": true
-  }
-let n=1;
+}
 
+// Search页面的数据
+const searchData = {
+    "code": 200,
+    "message": "成功",
+    "data": {
+        "trademarkList": [
+            {
+                "tmId": 1,
+                "tmName": "苹果"
+            }
+        ],
+        "attrsList": [
+            /* {
+                "attrId": 1,
+                "attrValueList": [
+                    "GSM（移动/联通2G）",
+                    "电信2G",
+                    "电信3G",
+                    "移动3G",
+                    "联通3G",
+                    "联通4G",
+                    "电信3G",
+                    "移动3G",
+                    "联通3G",
+                    "联通4G"
+                ],
+                "attrName": "品牌"
+            }, */
+            {
+                "attrId": 2,
+                "attrValueList": [
+                    "GSM（移动/联通2G）",
+                    "电信2G",
+                    "电信3G",
+                    "移动3G",
+                    "联通3G",
+                    "联通4G",
+                    "电信3G",
+                    "移动3G",
+                    "联通3G",
+                    "联通4G"
+                ],
+                "attrName": "网络制式"
+            },
+            {
+                "attrId": 3,
+                "attrValueList": [
+                    "4.0-4.9英寸",
+                    "4.0-4.9英寸"
+                ],
+                "attrName": "显示屏尺寸"
+            },
+            {
+                "attrId": 4,
+                "attrValueList": [
+                    "1200万以上",
+                    "800-1199万",
+                    "1200-1599万",
+                    "1600万以上无摄像头"
+                ],
+                "attrName": "摄像头像素"
+            },
+            {
+                "attrId": 5,
+                "attrValueList": [
+                    "0-500元",
+                    "500-1199元",
+                    "1000-1500元",
+                    "2000-3000元",
+                    "3000元以上"
+                ],
+                "attrName": "价格"
+            },
+            {
+                "attrId": 6,
+                "attrValueList": [
+                    "特点",
+                    "系统",
+                    "手机内存",
+                    "单卡双卡",
+                    "其他"
+                ],
+                "attrName": "更多筛选项"
+            },
+
+        ],
+        "goodsList": [
+            {
+                "id": 1,
+                "defaultImg": "http://localhost:8000/images/mobile01.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 2,
+                "defaultImg": "http://localhost:8000/images/mobile02.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 3,
+                "defaultImg": "http://localhost:8000/images/mobile03.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 4,
+                "defaultImg": "http://localhost:8000/images/mobile04.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 5,
+                "defaultImg": "http://localhost:8000/images/mobile01.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 6,
+                "defaultImg": "http://localhost:8000/images/mobile05.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 7,
+                "defaultImg": "http://localhost:8000/images/mobile06.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 8,
+                "defaultImg": "http://localhost:8000/images/mobile02.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 9,
+                "defaultImg": "http://localhost:8000/images/mobile03.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+            {
+                "id": 10,
+                "defaultImg": "http://localhost:8000/images/mobile05.png",
+                "title": "Apple iPhone 11 (A2223)",
+                "price": 6088,
+                "createTime": null,
+                "tmId": null,
+                "tmName": null,
+                "category1Id": null,
+                "category1Name": null,
+                "category2Id": null,
+                "category2Name": null,
+                "category3Id": null,
+                "category3Name": null,
+                "hotScore": 0,
+                "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
+            },
+        ],
+        "total": 8,
+        "pageSize": 2,
+        "pageNo": 1,
+        "totalPages": 4
+    },
+    "ok": true
+};
+let n = 1;
+
+
+// 设置静态资源路径
 app.use(express.static('asset'))
 
 // 请求物品分类
-app.get('/api/product/getBaseCategoryList',(request, response)=>{
-    console.log('有人请求了，请求的地址是：',request.url,n++);
-  response.send(BaseCategoryLIst);
+app.get('/api/product/getBaseCategoryList', (request, response) => {
+    console.log('有人请求了，请求的地址是：', request.url, n++);
+    response.send(BaseCategoryLIst);
 })
 
 
 // 首页轮播广告
-app.get('/api/cms/banner',(request, response)=>{
-  console.log('有人请求了，请求地址是：',request.url,n++);
-  response.send(HomeCarouselBannerData);
-  
+app.get('/api/cms/banner', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    response.send(HomeCarouselBannerData);
+
+})
+/* 
+搜索页数据请求
+/api/list
+POST
+请求体参数
+
+*/
+app.post('/api/list', (request, response) => {
+    // 响应体设置内容类型
+    // response.setHeader('Content-Type','text/plain');
+    response.send(searchData);
+    console.log('有人请求了，请求地址是：', request.url, request.body,n++);
+    // console.log('有人请求了，请求体内容是：', request, n++);
 })
 
-app.listen(8000,()=>{
-    let n=1;
-  console.log('8000端口监听中！');
+app.listen(8000, () => {
+    let n = 1;
+    console.log('8000端口监听中！');
 })

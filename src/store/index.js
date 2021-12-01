@@ -9,10 +9,11 @@ import Vuex from 'vuex'
 
 import home from './modules/home'
 import userInfo from './modules/userInfo'
+import search from './modules/search'
 
 Vue.use(Vuex);
 
-    const state ={
+/*     const state ={
         xxx:''
     }
     const mutations={
@@ -27,15 +28,16 @@ Vue.use(Vuex);
     }
     const getters={
         
-    } 
+    }  */
 
 export default new Vuex.Store({
-    state,
+/*     state,
     mutations,
     actions,
-    getters,
+    getters, */
     modules:{
         home,
-        userInfo
+        userInfo,
+        search
     }
 })

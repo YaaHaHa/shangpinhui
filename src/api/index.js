@@ -38,3 +38,12 @@ export function reqRecommends() {
 export function reqFloors () {
   return mockAjax('/floors');
 }
+
+/* 
+  搜索页数据请求
+  /api/list
+  POST
+  请求体参数
+    reqParams为请求体参数
+*/
+export const reqSearch = (reqParams) => ajax.post('/list',reqParams);

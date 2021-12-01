@@ -92,3 +92,8 @@ rtype:表示需要拦截的 Ajax 请求类型
 template:请求要返回的模拟数据
 function:执行结果作为模拟数据返回
 options:指向本次请求的 Ajax 选项集，含有 url、type 和 body 三个属性，参见 XMLHttpRequest 规范
+
+### v-for遍历undefined不会报错
+* 也就是说如果`goodsList`需要被遍历的数据是需要异步获取的，页面加载时数据还没过来，`v-for`不会报错的，
+* 但是如果像`{{goodList.length}}`访问一个`undefined`的`length`是会报错的，所以为了防止这种情况发生，要给这个数据一个初始值,一个空数组作初始值会比较好一些
+* 这样一来如果是`vuex`的数据，想给state加一个初始值不可能，所以运用到了`Getters`，通过`Getter`二次加工再给各组件去用
