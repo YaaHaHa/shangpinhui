@@ -77,9 +77,22 @@ export default {
         // location.query= { keyword2: this.keyWord.toUpperCase() };
         location.query = query;   //把当前路径下的query参数拿过来连带新输入的params参数一同发送请求
       }
-      // 跳转到sousuo
-      this.$router.push(location);
+      // 跳转到sousuo，如果当前已经在search中，就replace，方便在导航栏返回
+      if (this.$route.name === 'sousuo'){
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
     },
+  },
+  mounted() {
+    // 绑定自定义事件，等Search那边需要就会触发调用
+    this.$bus.$on('clearKeyword',()=>{
+      this.keyWord = '';
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off('clearKeyword');
   },
 };
 </script>

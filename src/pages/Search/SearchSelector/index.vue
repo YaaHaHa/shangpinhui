@@ -4,24 +4,13 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li>索尼（SONY）</li>
-          <li>TCL</li>
-          <li>长虹（CHANGHONG）</li>
-          <li>飞利浦（PHILIPS）</li>
-          <li>风行电视</li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone08.png" /></li>
-          <li><img src="./images/phone09.png" /></li>
-          <li><img src="./images/phone10.png" /></li>
-          <li><img src="./images/phone11.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone14.png" /></li>
-          <li><img src="./images/phone01.png" /></li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone02.png" /></li>
+          <li
+            v-for="item in productList.trademarkList"
+            :key="item.tmId"
+            @click="setTrademark(`${item.tmId}:${item.tmName}`)"
+          >
+            {{ item.tmName }}
+          </li>
         </ul>
       </div>
       <div class="ext">
@@ -29,12 +18,16 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <div class="type-wrap" v-for="item in productList.attrsList" :key="item.attrId">
-      <div class="fl key">{{item.attrName}}</div>
+    <div
+      class="type-wrap"
+      v-for="item in productList.attrsList"
+      :key="item.attrId"
+    >
+      <div class="fl key">{{ item.attrName }}</div>
       <div class="fl value">
-        <ul class="type-list" v-for="(ln,index) in item.attrValueList" :key="index">
-          <li>
-            <a>{{ln}}</a>
+        <ul class="type-list">
+          <li v-for="(ln, index) in item.attrValueList" :key="index" @click="$emit('setprops',`${item.attrId}:${ln}:${item.attrName}`)">
+            <a>{{ ln }}</a>
           </li>
         </ul>
       </div>
@@ -47,8 +40,16 @@
 import { mapState } from "vuex";
 export default {
   name: "SearchSelector",
+  data() {
+    return {
+      a: 1,
+    };
+  },
   computed: {
-    ...mapState({ productList: (state) => state.search.productList }),
+    ...mapState({ productList: (state) => state.search.productList || [] }),
+  },
+  props: {
+    setTrademark: Function,
   },
 };
 </script>

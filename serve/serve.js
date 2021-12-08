@@ -317,25 +317,41 @@ const searchData = {
             {
                 "tmId": 1,
                 "tmName": "苹果"
-            }
+            },
+            {
+                "tmId": 2,
+                "tmName": "华为"
+            },
+            {
+                "tmId": 3,
+                "tmName": "华为"
+            },
+            {
+                "tmId": 4,
+                "tmName": "华为"
+            },
+            {
+                "tmId": 5,
+                "tmName": "华为"
+            },
+            {
+                "tmId": 6,
+                "tmName": "华为"
+            },
+            {
+                "tmId": 7,
+                "tmName": "索尼"
+            },
+            {
+                "tmId": 8,
+                "tmName": "索尼"
+            },
+            {
+                "tmId": 9,
+                "tmName": "小米"
+            },
         ],
         "attrsList": [
-            /* {
-                "attrId": 1,
-                "attrValueList": [
-                    "GSM（移动/联通2G）",
-                    "电信2G",
-                    "电信3G",
-                    "移动3G",
-                    "联通3G",
-                    "联通4G",
-                    "电信3G",
-                    "移动3G",
-                    "联通3G",
-                    "联通4G"
-                ],
-                "attrName": "品牌"
-            }, */
             {
                 "attrId": 2,
                 "attrValueList": [
@@ -602,8 +618,25 @@ POST
 app.post('/api/list', (request, response) => {
     // 响应体设置内容类型
     // response.setHeader('Content-Type','text/plain');
-    response.send(searchData);
-    console.log('有人请求了，请求地址是：', request.url, request.body,n++);
+    // 如果请求中有trademark就更改列表，观察有没有数据渲染
+    if (request.body.trademark) {
+        response.send({
+            ...searchData,
+            "data": {
+                ...searchData.data,
+                "trademarkList": [
+                    {
+                        "tmId": `${request.body.trademark.split(":")[0]}`,
+                        "tmName": `${request.body.trademark.split(":")[1]}`
+                    }
+                ]
+            }
+        });
+    } else{
+        response.send(searchData);
+    }
+
+    console.log('有人请求了，请求地址是：', request.url, request.body, n++);
     // console.log('有人请求了，请求体内容是：', request, n++);
 })
 

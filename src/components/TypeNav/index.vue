@@ -121,7 +121,9 @@ export default {
         当前路径中就有params参数这里要接一下params参数
         
         */ 
-        
+        const location = {
+          name:'sousuo'
+        }
         const params_keyword = this.$route.params.keyword;
         // 拿到被点击标签的数据准备路由切换中当参数
         const query = {
@@ -135,11 +137,13 @@ export default {
         } else if (categoryid3) {
           query.categoryId3 = categoryid3;
         }
-        this.$router.push({
-          name: "sousuo", //注意这里是name还是path
-          params:{keyword:params_keyword},
-          query,
-        });
+        location.query = query;
+        location.params = {keyword:params_keyword}
+        if (this.$route.name === 'sousuo'){
+          this.$router.replace(location);
+        } else {
+          this.$router.push(location);
+        }
       }
       // 跳转到search页面要先隐藏列表！！！！(为什么注了？因为data中做到了根据path动态设置isShowFirst)
       // this.hideFirst();
@@ -164,7 +168,7 @@ export default {
       // 离开整个分类div时下标改成-2，其实改成多少无所谓，只是在匹配currentIndex与index时的前置判断条件
       this.currentIndex = -2;
       // 如果在search页面就先隐藏，有动画
-      if (this.$route.path == '/search'){
+      if (this.$route.path !== '/'){
         this.isShowFirst=false;
       }
     },

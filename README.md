@@ -97,3 +97,36 @@ options:指向本次请求的 Ajax 选项集，含有 url、type 和 body 三个
 * 也就是说如果`goodsList`需要被遍历的数据是需要异步获取的，页面加载时数据还没过来，`v-for`不会报错的，
 * 但是如果像`{{goodList.length}}`访问一个`undefined`的`length`是会报错的，所以为了防止这种情况发生，要给这个数据一个初始值,一个空数组作初始值会比较好一些
 * 这样一来如果是`vuex`的数据，想给state加一个初始值不可能，所以运用到了`Getters`，通过`Getter`二次加工再给各组件去用
+
+### created与mounted
+created是在渲染模板之前调用，在created中先把数据准备好，再渲染，
+mounted中获取数据渲染的话，已经渲染过一次，数据过来后再更新渲染一下。
+
+#### 在同一个路由组件里跳转，只是路径的跳转的话，搜索组件对象不会重新创建, 初始化的勾子不会重新执行 ==> 不会再发请求
+
+
+### 数组也能解构取值
+
+### 函数传参之地址引用
+```js
+const obj = {name:'123',age:'20'}
+
+function fn(params){
+    params.name='111';
+}
+
+// 这里是吧obj在栈中的地址数据传进了fn中
+fn(obj);
+```
+
+### 去掉请求对象中的没意义的属性
+```js
+        // 浅拷贝一层，因为要过滤掉空数组与内容为空的属性，这里是地址引用，这里的searchParams与Search组件中的option是一个对象
+        searchParams = {...searchParams};
+        // 遍历查找有没有属性为空或空数组，有就删除
+        Object.keys(searchParams).forEach((key)=>{
+          if (searchParams[key] === '' || (Array.isArray(searchParams[key]) && searchParams[key].length === 0)){
+            delete searchParams[key];
+          }
+        })
+```

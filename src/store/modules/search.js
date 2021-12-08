@@ -24,6 +24,14 @@ const actions = {
     根据指定的搜索条件, 异步获取商品列表的action
     */
     async getProductList({ commit }, searchParams) {
+        // 浅拷贝一层，因为要过滤掉空数组与内容为空的属性，这里是地址引用，这里的searchParams与Search组件中的option是一个对象
+        searchParams = {...searchParams};
+        // 遍历查找有没有属性为空或空数组，有就删除
+        Object.keys(searchParams).forEach((key)=>{
+          if (searchParams[key] === '' || (Array.isArray(searchParams[key]) && searchParams[key].length === 0)){
+            delete searchParams[key];
+          }
+        })
         // 1. ajax请求, 获取数据
         const result = await reqSearch(searchParams)
         // 2. 如果成功, 提交给mutation
