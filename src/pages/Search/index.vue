@@ -12,7 +12,11 @@
           </ul>
           <ul class="fl sui-tag">
             <!-- 这里的index是处理辨认的作用，删除时要确定是哪一个 -->
-            <li class="with-x" v-for="(prop,index) in options.props" :key="prop">
+            <li
+              class="with-x"
+              v-for="(prop, index) in options.props"
+              :key="prop"
+            >
               {{ prop }}<i @click="removeprops(index)">×</i>
             </li>
             <li class="with-x" v-if="options.categoryName">
@@ -28,42 +32,62 @@
         </div>
 
         <!--selector-->
-        <SearchSelector :setTrademark="setTrademark" @setprops="setprops"/>
+        <SearchSelector :setTrademark="setTrademark" @setprops="setprops" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active: orderId === '1'}" @click="setOrder('1')">
+                <li :class="{ active: orderId === '1' }" @click="setOrder('1')">
                   <a href="javascript:">
                     综合
-                    <i class="iconfont" :class="orderType ==='asc' ? 'icon-up':' icon-down'" v-if="orderId === '1'"></i>
-                    </a>
+                    <i
+                      class="iconfont"
+                      :class="orderType === 'asc' ? 'icon-up' : ' icon-down'"
+                      v-if="orderId === '1'"
+                    ></i>
+                  </a>
                 </li>
-                <li :class="{active: orderId === '2'}" @click="setOrder('2')">
+                <li :class="{ active: orderId === '2' }" @click="setOrder('2')">
                   <a href="javascript:">
                     销量
-                    <i class="iconfont" :class="orderType ==='asc' ? 'icon-up':' icon-down'" v-if="orderId === '2'"></i>
-                    </a>
+                    <i
+                      class="iconfont"
+                      :class="orderType === 'asc' ? 'icon-up' : ' icon-down'"
+                      v-if="orderId === '2'"
+                    ></i>
+                  </a>
                 </li>
-                <li :class="{active: orderId === '3'}" @click="setOrder('3')">
+                <li :class="{ active: orderId === '3' }" @click="setOrder('3')">
                   <a href="javascript:">
                     新品
-                    <i class="iconfont" :class="orderType ==='asc' ? 'icon-up':' icon-down'" v-if="orderId === '3'"></i>
-                    </a>
+                    <i
+                      class="iconfont"
+                      :class="orderType === 'asc' ? 'icon-up' : ' icon-down'"
+                      v-if="orderId === '3'"
+                    ></i>
+                  </a>
                 </li>
-                <li :class="{active: orderId === '4'}" @click="setOrder('4')">
+                <li :class="{ active: orderId === '4' }" @click="setOrder('4')">
                   <a href="javascript:">
                     价格
-                    <i class="iconfont" :class="orderType ==='asc' ? 'icon-up':' icon-down'" v-if="orderId === '4'"></i>
-                    </a>
+                    <i
+                      class="iconfont"
+                      :class="orderType === 'asc' ? 'icon-up' : ' icon-down'"
+                      v-if="orderId === '4'"
+                    ></i>
+                  </a>
                 </li>
-                <li :class="{active: orderId === '5'}" @click="setOrder('5')">
+                <li :class="{ active: orderId === '5' }" @click="setOrder('5')">
                   <a href="javascript:">
                     评价
-                    <i class="iconfont" :class="orderType ==='asc' ? 'icon-up':' icon-down'" v-if="orderId === '5'"></i>
-                    </a>
+                    <i
+                      class="iconfont"
+                      :class="orderType === 'asc' ? 'icon-up' : ' icon-down'"
+                      v-if="orderId === '5'"
+                    ></i>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -72,7 +96,7 @@
             <ul class="yui3-g">
               <li
                 class="yui3-u-1-5"
-                v-for="item in productList.goodsList"
+                v-for="item in (productList.goodsList || '').slice(0,10)"
                 :key="item.id"
               >
                 <div class="list-wrap">
@@ -110,35 +134,12 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination
+            :currentPage="options.pageNo"
+            :total="total"
+            :pageSize="options.pageSize"
+            :showPageNo="3"
+          />
         </div>
       </div>
     </div>
@@ -146,7 +147,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import SearchSelector from "./SearchSelector";
 export default {
   name: "Search",
@@ -155,13 +156,13 @@ export default {
       options: {
         categoryId1: "", // 一级分类ID
         categoryId2: "", // 二级分类ID
-        categoryId3: "", // 三级分类ID
+        categoryId3: "", // 三级分类ID 
         // categoryName: "", // 分类名称
         keyword: "", // 搜索关键字
         props: [], // ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
         trademark: "", // 品牌: "ID:品牌名称"示例: "1:苹果"
         order: "1:desc", // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
-        pageNo: 1, // 页码
+        pageNo: 8, // 页码
         pageSize: 10, // 每页数量
       },
     };
@@ -187,44 +188,50 @@ export default {
   },
   mounted() {},
   computed: {
-    ...mapState({ productList: (state) => state.search.productList || [] }),
+    ...mapState({ productList: (state) => state.search.productList}),
+    ...mapGetters('search',['total']), 
     // 当前培训的id
-    orderId(){
-      const {order} = this.options;
-      return order.split(':')[0];
+    orderId() {
+      const { order } = this.options;
+      return order.split(":")[0];
     },
     // 当前排序的类型
-    orderType(){
-      const {order} = this.options;
-      return order.split(':')[1];
-    }
+    orderType() {
+      const { order } = this.options;
+      return order.split(":")[1];
+    },
+    // 要传给Pagination的所有数据,由于数据是异步获取的，所以有那么一个时间段中是undefined，
+    // undefined传过去不行，那边要用length，所以先用空数组顶一下
+    /* total(){
+      return this.productList.goodsList || [];
+    } */
+
   },
   methods: {
     // 设置排序
-    setOrder (orderFlag) {
+    setOrder(orderFlag) {
       // 由于不能直接操作computed属性，所有拿出来方便使用
       let orderID = this.orderId;
       let orderTYPE = this.orderType;
-      if (orderFlag === orderID){
-        orderTYPE = orderTYPE==='desc' ? 'asc':'desc';    //如果当前是desc就改成asc，如果不是desc那就改成desc
-      } else{
-        orderID = orderFlag; 
-        orderTYPE ='desc'
+      if (orderFlag === orderID) {
+        orderTYPE = orderTYPE === "desc" ? "asc" : "desc"; //如果当前是desc就改成asc，如果不是desc那就改成desc
+      } else {
+        orderID = orderFlag;
+        orderTYPE = "desc";
       }
       // 修改参数发一次请求
-      this.options.order = orderID+':'+orderTYPE;
+      this.options.order = orderID + ":" + orderTYPE;
       this.sendReuest();
     },
     // 删除属性搜索值
     removeprops(index) {
-      const {props} = this.options;
-      props.splice(index,1);
+      const { props } = this.options;
+      props.splice(index, 1);
       this.sendReuest();
-      
     },
-    setprops(prop){
+    setprops(prop) {
       // 获取点击到的属性，添加到options里发送请求
-      const {props} = this.options;
+      const { props } = this.options;
       if (props.includes(prop)) return;
       props.push(prop);
       this.sendReuest();
@@ -234,17 +241,17 @@ export default {
     setTrademark(trademark) {
       // 如果已有品牌信息，不执行
       if (this.options.trademark) return;
-     /*  
+      /*  
       this.options.trademark = trademark;  假如options中没有trademark属性，这样是无法做到响应数据的，
       这样其实也能有效果，只不过是因为请求过来数据后页面一看有数据才显示 ，我们要的是一点就有效果，所以需要$set来数据响应
       */
-      this.$set(this.options,'trademark',trademark);
+      this.$set(this.options, "trademark", trademark);
       this.sendReuest();
     },
     // 清理品牌标签
     removeTrademark() {
       // this.options.trademark = "";
-      this.$delete(this.options,'trademark')
+      this.$delete(this.options, "trademark");
       this.sendReuest();
     },
     // 清除类别标签，清除类别相关，然后刷新界面，怎么刷新页面？根据新的参数跳转
@@ -532,93 +539,6 @@ export default {
                 }
               }
             }
-          }
-        }
-      }
-
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        float: right;
-
-        .sui-pagination {
-          margin: 18px 0;
-
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
-
-            li {
-              line-height: 18px;
-              display: inline-block;
-
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
-
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
-
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
-
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
-
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
-
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
           }
         }
       }

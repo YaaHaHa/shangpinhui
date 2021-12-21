@@ -42,7 +42,10 @@ const actions = {
     }
 }
 const getters = {
-
+    // 因为要使用，所以要有一个初始值，省的出错,获取unfedined的length会报错的
+    total(state){
+        return (state.productList.goodsList || []).length;
+    }
 }
 
 export default {

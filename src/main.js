@@ -3,6 +3,7 @@ import App from './App.vue'
 
 // 引入全局组件TypeNav
 import TypeNav from './components/TypeNav'
+import Pagination from './components/Pagination'
 
 // 引入路由模块
 import router from './router'
@@ -19,6 +20,7 @@ import './mocks/mockServer' //加载mock,也就是说拉过来执行一下
 
 // 注册全局组件TypeNav
 Vue.component(TypeNav.name,TypeNav);
+Vue.component(Pagination.name,Pagination)
 new Vue({
   el:'#app',
   render: h => h(App),
