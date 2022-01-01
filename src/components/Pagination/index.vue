@@ -1,14 +1,18 @@
 <template>
   <div class="pagination">
-    <button :disabled="myCurrentPage === 1">上一页</button>
-    <button v-if="startEnd.start > 1">1</button>
-    <button v-if="startEnd.start > 1">···</button>
+    <button :disabled="myCurrentPage === 1" :class="{disable: myCurrentPage ===1}">上一页</button>
+    <button v-if="startEnd.start > 1" @click="sentCurrentPage(1)">1</button>
+    <button v-if="startEnd.start > 2">···</button>
 
-    <button v-for="n in startEndArr" :key="n">{{n}}</button>
+    <button v-for="item in startEndArr" :key="item"
+    :class="{active : item===myCurrentPage}"
+    @click="sentCurrentPage(item)"
+    >{{item}}</button>
 
 
-    <button v-if="startEnd.end < totalPage">···</button>
-    <button :disabled ="startEnd.end >= totalPage">下一页</button>
+    <button v-if="startEnd.end < totalPage-1">···</button>
+    <button v-if="startEnd.end < totalPage" @click="sentCurrentPage(totalPage)">{{totalPage}}</button>
+    <button :disabled ="myCurrentPage === totalPage" :class="{disable: myCurrentPage === startEnd.end}">下一页</button>
 
     <button style="margin-left: 30px">共{{total}}条</button>
   </div>
@@ -22,6 +26,7 @@ export default {
       myCurrentPage: this.currentPage || 1,
     };
   },
+  
   props: {
     currentPage: {
       type: Number,
@@ -44,6 +49,14 @@ export default {
         return value % 2 === 1;
       },
     },
+  },
+  watch:{
+    currentPage(value){
+      /* 
+        子组件监视父组件传入的数据变化
+      */
+      this.myCurrentPage = value;
+    }
   },
   computed: {
     // 总页数
@@ -83,39 +96,48 @@ export default {
       return arr;
     },
   },
+  methods: {
+    // 切换页数
+    sentCurrentPage(page){
+      if (this.currentPage === page) return;
+      this.myCurrentPage = page;
+      // 触发自定义事件，把最新页码传过去再次发送请求
+      this.$emit('currentChange',page);
+    }
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .pagination {
-  button {
-    margin: 0 5px;
-    background-color: #f4f4f5;
-    color: #606266;
-    outline: none;
-    border-radius: 2px;
-    padding: 0 4px;
-    vertical-align: top;
-    display: inline-block;
-    font-size: 13px;
-    min-width: 35.5px;
-    height: 28px;
-    line-height: 28px;
-    cursor: pointer;
-    box-sizing: border-box;
-    text-align: center;
-    border: 0;
+    button {
+      margin: 0 5px;
+      background-color: #f4f4f5;
+      color: #606266;
+      outline: none;
+      border-radius: 2px;
+      padding: 0 4px;
+      vertical-align: top;
+      display: inline-block;
+      font-size: 13px;
+      min-width: 35.5px;
+      height: 28px;
+      line-height: 28px;
+      cursor: pointer;
+      box-sizing: border-box;
+      text-align: center;
+      border: 0;
 
-    &[disabled] {
-      color: #c0c4cc;
-      cursor: not-allowed;
-    }
+      &.active {
+        background: blue;
+        color: white;
+        cursor: not-allowed;
+      }
 
-    &.active {
-      cursor: not-allowed;
-      background-color: #409eff;
-      color: #fff;
+      &.disable {
+        cursor: not-allowed;
+        color: #ccc;
+      }
     }
   }
-}
 </style>

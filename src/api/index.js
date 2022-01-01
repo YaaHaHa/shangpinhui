@@ -47,3 +47,33 @@ export function reqFloors () {
     reqParams为请求体参数
 */
 export const reqSearch = (reqParams) => ajax.post('/list',reqParams);
+
+/* 
+
+  获取商品详情
+  请求地址：/api/item/{ skuId }
+  GET
+  参数:skuId，string  商品id
+
+*/
+export const reqDetailInfo = (skuId) =>{
+  return ajax({
+    url:`/item/${skuId}`,
+    method:'get'
+  })
+};
+
+/* 
+  添加购物车
+  /api/cart/addToCart/{ skuId }/{ skuNum }
+  POST
+  skuID	string	Y	商品ID
+  skuNum	string	Y	商品数量 正数代表增加 负数代表减少
+
+*/
+export const reqaddShopCar = (skuId,skuNum) =>{
+  return ajax({
+    url:`/cart/addToCart/${ skuId }/${ skuNum }`,
+    method:'post'
+  })
+}

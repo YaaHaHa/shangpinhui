@@ -10,6 +10,8 @@ import Vuex from 'vuex'
 import home from './modules/home'
 import userInfo from './modules/userInfo'
 import search from './modules/search'
+import detail from './modules/detail'
+import shopCar from './modules/shopCar'
 
 Vue.use(Vuex);
 
@@ -38,6 +40,8 @@ export default new Vuex.Store({
     modules:{
         home,
         userInfo,
-        search
+        search,
+        detail,
+        shopCar
     }
 })

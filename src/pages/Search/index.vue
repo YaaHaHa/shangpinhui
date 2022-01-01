@@ -101,9 +101,9 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="javascript:" target="_blank"
-                      ><img :src="item.defaultImg"
-                    /></a>
+                    <router-link :to="'/detail/'+item.id">
+                      <img :src="item.defaultImg"/>
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -112,9 +112,9 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a target="_blank" href="item.html" :title="item.title">{{
+                    <router-link :to="'/detail/'+item.id">{{
                       item.attrs
-                    }}</a>
+                    }}</router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -139,6 +139,7 @@
             :total="total"
             :pageSize="options.pageSize"
             :showPageNo="3"
+            @currentChange="sendReuest"
           />
         </div>
       </div>
@@ -162,7 +163,7 @@ export default {
         props: [], // ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
         trademark: "", // 品牌: "ID:品牌名称"示例: "1:苹果"
         order: "1:desc", // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
-        pageNo: 8, // 页码
+        pageNo: 1, // 页码
         pageSize: 10, // 每页数量
       },
     };
@@ -208,6 +209,10 @@ export default {
 
   },
   methods: {
+    // 更改当前页码
+    /* currentChange(page){
+      this.sendReuest(page);
+    }, */
     // 设置排序
     setOrder(orderFlag) {
       // 由于不能直接操作computed属性，所有拿出来方便使用
@@ -243,7 +248,9 @@ export default {
       if (this.options.trademark) return;
       /*  
       this.options.trademark = trademark;  假如options中没有trademark属性，这样是无法做到响应数据的，
-      这样其实也能有效果，只不过是因为请求过来数据后页面一看有数据才显示 ，我们要的是一点就有效果，所以需要$set来数据响应
+      这样其实也能有效果，只不过是因为请求过来数据后，因为computed中获取新的productList，也就是说属性更新了，才会重新渲染
+      而且页面一看有trademark这个属性了，v-if就显示了 ，
+      我们要的是响应式，我们要的是一点击就马上有效果，所以需要$set来数据响应
       */
       this.$set(this.options, "trademark", trademark);
       this.sendReuest();
@@ -292,8 +299,9 @@ export default {
         categoryId3,
       };
     },
-    // 调用dispatch去发送请求
-    sendReuest() {
+    // 调用dispatch去发送请求，默认参数为1
+    sendReuest(page=1) {
+      this.options.pageNo = page;
       this.$store.dispatch("search/getProductList", this.options);
     },
   },

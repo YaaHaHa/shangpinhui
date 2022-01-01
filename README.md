@@ -130,3 +130,35 @@ fn(obj);
           }
         })
 ```
+
+### 自定义事件中，使用$event不是事件对象，是传递的数据
+
+
+### 在分页器相关的开发时
+默认在第一页，如果翻动了页数，再选择上方的品牌选择器，
+    虽然Search组件中pageNo为1，但是Pagination中的myCurrentPage还是之前翻动后的页数,
+    所以需要监听到Search中pageNo，由于已经通过props传给了Pagination，所以
+    直接watch，然后改myCurrentPage
+
+
+### 在vue中如果找不到方法处理功能，可以试着设置一个data
+
+### async函数返回的一定是Promise值,dispatch就是把action的函数拿过来执行了一下，所以可以用
+```js
+                            第二个参数是函数的参数，没有第三个，所以要在第二个函数内接到参数，解构
+async reqAddCartSuccess({commit},{skuId,skuNum}){
+        const result= await reqaddShopCar(skuId,skuNum);
+        if (result.code === 200){
+            console.log(result);
+            return "ok";
+        } else{
+            return Promise.reject(new Error('failed'));
+        }
+    }
+
+```
+
+### 以后如果我们遇到的数据是简单数据，那么我们考虑路由传参  如果我们遇到的是复杂数据(对象)，那么我们考虑存储手段
+    localStorage        setItem  getItem  removeItem  clear
+    sessionStorage         -- ---------
+* 区别：localStorage是永久储存   sessionStorage浏览器关了就没了
