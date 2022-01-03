@@ -11,27 +11,24 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list">
+        <ul class="cart-list" v-for="cartItem in cartList" :key="cartItem.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list">
+            <input type="checkbox" name="chk_list" :checked="cartItem.isChecked">
           </li>
           <li class="cart-list-con2">
-            <img :src="skuInfo.skuDefaultImg">
-            <div class="item-msg">{{skuInfo.skuName}}</div>
-          </li>
-          <li class="cart-list-con3">
-            <div class="item-txt">语音升级款</div>
+            <img src="./images/goods1.png">
+            <div class="item-msg">{{cartItem.skuName}}</div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{skuInfo.price}}</span>
+            <span class="price">{{cartItem.cartPrice}}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins" @click="skuNum= skuNum <=1? 1:--skuNum">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt" v-model="skuNum">
-            <a href="javascript:void(0)" class="plus" @click=" skuNum++">+</a>
+            <a href="javascript:void(0)" class="mins">-</a>
+            <input autocomplete="off" type="text" :value="cartItem.skuNum" minnum="1" class="itxt">
+            <a href="javascript:void(0)" class="plus">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{skuInfo.price*skuNum}}</span>
+            <span class="sum">{{cartItem.cartPrice*cartItem.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet">删除</a>
@@ -43,7 +40,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox">
+        <input class="chooseAll" type="checkbox" v-model="isCkeckoutAll">
         <span>全选</span>
       </div>
       <div class="option">
@@ -53,10 +50,10 @@
       </div>
       <div class="money-box">
         <div class="chosed">已选择
-          <span>0</span>件商品</div>
+          <span>{{cartNum}}</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{allMoney}}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -66,20 +63,52 @@
   </div>
 </template>
 
+
 <script>
+import { mapState } from 'vuex';
   export default {
     name: 'ShopCart',
-    data() {
-      return {
-        skuInfo:{},
-        skuNum:''
+    beforeMount() {
+      this.getCartList();
+    },
+    methods: {
+      getCartList(){
+        this.$store.dispatch('shopCar/reqCarList')
       }
     },
-    beforeMount() {
-      // 在这里保存数据
-      this.skuInfo = JSON.parse(sessionStorage.getItem('SKUINFO_KEY'));
-      this.skuNum = this.$route.query.skuNum;
-    },
+    computed:{
+      // ...mapState('shopCar',['cartList'])
+      ...mapState({
+        cartList: state => state.shopCar.cartList
+      }),
+
+      // 总商品数
+      cartNum(){
+        return this.cartList.reduce((acc,cur)=>{
+          return acc+=cur.skuNum
+        },0)
+      },
+
+      // 总价
+      allMoney(){
+        return this.cartList.reduce((acc,cur)=>{
+          if (cur.isChecked){
+            acc+=cur.cartPrice*cur.skuNum
+          }
+          return acc
+        },0)
+      },
+
+      // 是否全选
+      isCkeckoutAll:{
+        get(){
+          return this.cartList.every(c=> c.isChecked == 1)
+        },
+        set(){
+
+        }
+      }
+    }
   }
 </script>
 
@@ -144,11 +173,11 @@
           }
 
           .cart-list-con1 {
-            width: 4.1667%;
+            width: 15%;
           }
 
           .cart-list-con2 {
-            width: 25%;
+            width: 35%;
 
             img {
               width: 82px;
@@ -164,21 +193,14 @@
             }
           }
 
-          .cart-list-con3 {
-            width: 20.8333%;
-
-            .item-txt {
-              text-align: center;
-            }
-          }
 
           .cart-list-con4 {
-            width: 12.5%;
+            width: 10%;
 
           }
 
           .cart-list-con5 {
-            width: 12.5%;
+            width: 17%;
 
             .mins {
               border: 1px solid #ddd;
@@ -211,7 +233,7 @@
           }
 
           .cart-list-con6 {
-            width: 12.5%;
+            width: 10%;
 
             .sum {
               font-size: 16px;
@@ -219,7 +241,7 @@
           }
 
           .cart-list-con7 {
-            width: 12.5%;
+            width: 13%;
 
             a {
               color: #666;

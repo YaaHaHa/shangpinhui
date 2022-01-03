@@ -4,7 +4,8 @@ import Search from '../pages/Search'
 import Register from '../pages/Register'
 import Login from '../pages/Login'
 import Detail from '../pages/Detail'
-import ShopCar from '../pages/ShopCar'
+import AddCartSuccess from '../pages/AddCartSuccess'
+import ShopCart from '../pages/ShopCart'
 
 export default [
     {
@@ -12,8 +13,12 @@ export default [
         component: Home
     },
     {
+        path: '/shopcart',
+        component: ShopCart
+    },
+    {
         path: '/addCartSuccess',
-        component: ShopCar
+        component: AddCartSuccess
     },
     {
         path: '/detail/:skuId?',

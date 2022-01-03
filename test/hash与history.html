@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hash与history</title>
+</head>
+<body>
+    <input type="button"  id="btn01" value="添加" >
+    <h1 id="h1_id"></h1>
+    <script>
+        /* 
+        hash
+            1、他不在http请求中，改hash不会重新加载页面
+            2、可以添加改变hash监听事件
+                hashchange
+        更新页面但不发送请求
+        */
+        // 获取当前页面的hash值
+        // console.log(window.location.hash);
+
+        /* window.addEventListener('hashchange',function(){
+            console.log(window.location.hash);
+            console.log(window.history);    //查看历史记录
+        }) */
+
+
+        /* 
+        history
+        pushState()   添加记录
+            第一个参数：；浏览器导航到新状态时的状态对象       他的变化会导致popState事件    使用onpopstate事件监听
+            
+            第二个参数：title
+            第三个参数：新的地址
+        replaceState()   替换记录
+        
+        
+        */
+       var _btn01 = document.getElementById('btn01');
+       var _h1 = document.getElementById('h1_id');
+       var _n = 0;
+
+       _btn01.onclick= function (){
+           _n++;
+        window.history.pushState({n:_n},'title',"?n="+_n);
+        _h1.innerHTML = _n;
+    }
+        window.onpopstate = function(e){
+            console.log(e.state);
+            // 从历史记录里。把值写给页面
+            _h1.innerHTML = e.state.n
+        }
+       
+    </script>
+</body>
+</html>

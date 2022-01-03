@@ -17,6 +17,9 @@ import './pluins/swiper'    //加载swiper配置
 import './mocks/mockServer' //加载mock,也就是说拉过来执行一下
 
 
+// 测试api
+import './api'
+
 
 // 注册全局组件TypeNav
 Vue.component(TypeNav.name,TypeNav);

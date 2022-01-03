@@ -5,6 +5,8 @@
 */
 import ajax from './ajax.js'
 import mockAjax from './mockAjax'
+
+
 /* 
 首页三级分类
 /api/product/getBaseCategoryList  GET
@@ -77,3 +79,18 @@ export const reqaddShopCar = (skuId,skuNum) =>{
     method:'post'
   })
 }
+
+/* 
+  获取购物车列表
+  /api/cart/cartList
+  GET
+  无参数
+
+*/
+export const reqShopCartList =() => {
+  return ajax({
+    url:'/cart/cartList',
+    method:'get'
+  })
+}
+reqShopCartList();

@@ -1,6 +1,8 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 
+
+import store from '../store'
 /* const service = axios.create({
     // baseURL:'http://localhost:8080/api',  基础路径
     baseURL:'/api',     //基础路径，以为本省就是在8000下的，直接去找api得了，不用带local....。而且到底开哪个端口也不一定，不用写死。
@@ -45,6 +47,8 @@ const service = axios.create({
 service.interceptors.request.use((config)=>{
     // 必须返回config，不然就发不出去了
     NProgress.start();
+    let userTempId = store.state.userInfo.userTempId;
+    config.headers.userTempId = userTempId
   return config;
 })
 

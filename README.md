@@ -158,7 +158,28 @@ async reqAddCartSuccess({commit},{skuId,skuNum}){
 
 ```
 
+### change与blur不同
+change时，输入框失去焦点，如果value改变了，那就触发
+blur是，不管value变不变，都会触发
+
 ### 以后如果我们遇到的数据是简单数据，那么我们考虑路由传参  如果我们遇到的是复杂数据(对象)，那么我们考虑存储手段
     localStorage        setItem  getItem  removeItem  clear
     sessionStorage         -- ---------
 * 区别：localStorage是永久储存   sessionStorage浏览器关了就没了
+
+
+### 排他与开关
+排他要用到两个数据，一个是item，一个是包含所有item的list。先遍历list设置一样的内容，再单独给某一个item设置
+
+
+### axios的请求拦截器中添加请求头
+```js
+//携带临时标识
+    let userTempId = store.state.user.userTempId
+    if(userTempId){
+    config.headers.userTempId = userTempId
+    }
+
+```
+
+### history与hash模式
