@@ -40,7 +40,7 @@ service.interceptors.response.use(
 // 为什么要通过create创建一个？因为发送的请求不止是给一个域名，这样更方便
 const service = axios.create({
     baseURL:'/api',
-    timeout:20000
+    timeout:4000
 })
 
 // 配置请求拦截器
@@ -49,6 +49,10 @@ service.interceptors.request.use((config)=>{
     NProgress.start();
     let userTempId = store.state.userInfo.userTempId;
     config.headers.userTempId = userTempId
+
+    // 在请求头中携带token
+    let token = store.state.userInfo.token;
+    config.headers.token = token;
   return config;
 })
 

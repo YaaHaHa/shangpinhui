@@ -13,25 +13,25 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cartItem in cartList" :key="cartItem.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cartItem.isChecked">
+            <input type="checkbox" name="chk_list" :checked="cartItem.isChecked" @click="changeState(cartItem.id,cartItem.isChecked)">
           </li>
           <li class="cart-list-con2">
-            <img src="./images/goods1.png">
+            <img :src="cartItem.imgUrl">
             <div class="item-msg">{{cartItem.skuName}}</div>
           </li>
           <li class="cart-list-con4">
             <span class="price">{{cartItem.cartPrice}}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" :value="cartItem.skuNum" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="updateCart(cartItem.id,cartItem.skuNum-1)">-</a>
+            <input autocomplete="off" type="text" :value="cartItem.skuNum" minnum="1" class="itxt" @change="updateCart(cartItem.id,$event.target.value)">
+            <a href="javascript:void(0)" class="plus" @click="updateCart(cartItem.id,cartItem.skuNum+1)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{cartItem.cartPrice*cartItem.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="removeCart(cartItem)">删除</a>
             <br>
             <a href="#none">移到收藏</a>
           </li>
@@ -44,7 +44,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#none" @click="removeAll()">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -72,8 +72,68 @@ import { mapState } from 'vuex';
       this.getCartList();
     },
     methods: {
+      // 删除所有被选中的商品
+      async removeAll(){
+        try {
+          this.$store.dispatch('shopCar/reqDeleteshopcartAll');
+          alert('全部删除成功');
+          this.getCartList();
+        } catch (error) {
+          alert(error.message);
+        }
+      },
+      // 删除购物车中商品
+      async removeCart(cartItem){
+        let {skuId,skuName} = cartItem;
+        try {
+          const result = this.$store.dispatch('shopCar/reqDeleteshopcart',skuId);
+          alert(result);
+          this.getCartList();
+        } catch (error) {
+          alert (error.message);
+        }
+      },
+      // 更改购物车商品选中状态
+       async changeState(skuId,isChecked){
+        isChecked = isChecked == 1? '0':'1';
+        try {
+
+          const result = this.$store.dispatch('shopCar/reqUpdateCartState',{skuId,isChecked});
+          alert('状态更新成功',result)
+
+        } catch (error) {
+          alert(error.message)
+        }
+        // 更新完购物车的转发后马上在重新获取最新的数据
+        this.getCartList();
+      },
+      // 获取购物车列表
       getCartList(){
-        this.$store.dispatch('shopCar/reqCarList')
+        this.$store.dispatch('shopCar/reqCarList');
+      },
+
+      // 更新购物车列表
+      async updateCart(id,num){
+        // 把num转换称String类型
+        num = num.toString();
+        console.log('ShopCart中的数据'+id,num);
+        num = num>=1? num : 1; 
+        /* 
+          需要根据请求过来响应的结果决定要不要下一步，而且await的Promise失败了就会抛出异常
+        
+        
+        */
+
+        try {
+          //                                                          注意名字，这是对象的属性，不是函数的参数！！！                                        
+          // const result = await this.$store.dispatch('shopCar/reqUpdateCartSuccess',{id,num});
+          const result = await this.$store.dispatch('shopCar/reqUpdateCartSuccess',{skuId:id,skuNum:num});
+          alert('更新购物车成功！',result);
+        } catch (error) {
+          alert('更新购物车失败',error.message);
+        }
+        // 更新完以后再一次获取后台的购物车数据
+        this.getCartList();
       }
     },
     computed:{
@@ -104,8 +164,14 @@ import { mapState } from 'vuex';
         get(){
           return this.cartList.every(c=> c.isChecked == 1)
         },
-        set(){
-
+        async set(val){
+          try {
+            const result = await this.$store.dispatch('shopCar/reqUpdateCartStateAll',val?1:0);
+            alert('成功全(不)选');
+            this.getCartList();
+          } catch (error) {
+            alert(error.message);
+          }
         }
       }
     }

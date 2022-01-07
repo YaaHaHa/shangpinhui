@@ -42,6 +42,6 @@ export default new Vuex.Store({
         userInfo,
         search,
         detail,
-        shopCar
+        shopCar,
     }
 })

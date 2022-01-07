@@ -3,6 +3,7 @@
   函数内部调用ajax函数发送请求
   函数返回的是promise对象？因为请求是异步的，数据也是异步过来的。直接返回数据行不通，为了方便取出异步的结果返回Promise
 */
+import { method } from 'lodash';
 import ajax from './ajax.js'
 import mockAjax from './mockAjax'
 
@@ -73,7 +74,7 @@ export const reqDetailInfo = (skuId) =>{
   skuNum	string	Y	商品数量 正数代表增加 负数代表减少
 
 */
-export const reqaddShopCar = (skuId,skuNum) =>{
+export const requpdateShopCar = (skuId,skuNum) =>{
   return ajax({
     url:`/cart/addToCart/${ skuId }/${ skuNum }`,
     method:'post'
@@ -93,4 +94,72 @@ export const reqShopCartList =() => {
     method:'get'
   })
 }
-reqShopCartList();
+
+// 改变商品选中状态的请求
+// get
+// 参数：skuId   商品ID
+//      isChecked   商品选中状态
+//                  0代表取消选中
+//     
+
+export const reqUpdateShopCartState = (skuId,isChecked) =>{
+  return ajax({
+    url:`/cart/checkCart/${skuId}/${isChecked}`,
+    method:'get'
+  })
+}
+
+// 删除购物车
+// /api/cart/deleteCart/{skuId}
+// DELETE
+// 参数skuId   商品Id
+
+export const reqDeleteShopCart = (skuId) =>{
+  return ajax({
+    url:`/cart/deleteCart/${skuId}`,
+    method:'delete'
+  })
+}
+
+/* 
+  /api/user/passport/register
+  注册用户
+  POST
+  请求体参数：
+      手机号 string
+      密码   string
+
+*/
+
+export const reqRegister = (userInfo) =>{
+  return ajax({
+    url:'/user/passport/register',
+    method:'post',
+    data:userInfo
+  })
+}
+
+// 登录/api/user/passport/login
+// POST
+// 参数： phone,password
+
+export const reqLogin = (userInfo) => {
+  return ajax({
+    url:'/user/passport/login',
+    method:'post',
+    data:userInfo
+  })
+}
+
+// api/user/passport/auth/getUserInfo
+// get
+// 获取用户数据
+export const reqUserInfo =() =>{
+  return ajax({
+    url:'/user/passport/auth/getUserInfo',
+    method:'get'
+  })
+}
+
+// reqRegister({phone:'111',password:'111111'});
+// reqShopCartList();

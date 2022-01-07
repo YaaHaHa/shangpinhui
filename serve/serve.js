@@ -1,1715 +1,31 @@
 const express = require('express');
-
+const fs = require('fs')
 const app = express();
 // 引入参数解析模块
 const bodyParser = require('body-parser');
+const { response } = require('express');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json())
 // 主页分类列表
-const BaseCategoryLIst = {
-    "code": 200,
-    "message": "成功",
-    "data": [
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 3
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 2
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 1
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 6
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 5
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 4
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 9
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 8
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 7
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 12
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 11
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 10
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 15
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 14
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 13
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 18
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 17
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 16
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 21
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 20
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 19
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 24
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 23
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 22
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 27
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 26
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 25
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 30
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 29
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 28
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 33
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 32
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 31
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 36
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 35
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 34
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 39
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 38
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 37
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 42
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 41
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 40
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 45
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 44
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 43
-        },
-        {
-            "categoryChild": [
-                {
-                    "categoryChild": [
-                        {
-                            "categoryName": "电子书",
-                            "categoryId": 48
-                        }
-                    ],
-                    "categoryName": "电子书刊",
-                    "categoryId": 47
-                }
-            ],
-            "categoryName": "图书、音像、电子书刊",
-            "categoryId": 46
-        }
-    ],
-    "ok": true
-}
+
 
 // Home页面轮播图数据
-const HomeCarouselBannerData = {
-    "code": 200,
-    "message": "成功",
-    "data": [
-        {
-            "id": 1,
-            "title": "小米电视4A 70英寸 4K超高清 HDR 二级能效 2GB+16GB L70M5-4A 内置小爱",
-            "imageUrl": "http://localhost:8000/images/banner1.jpg",
-            "linkUrl": "http://item.atguigu.cn/21.html",
-            "sort": 0
-        },
-        {
-            "id": 3,
-            "title": "test",
-            "imageUrl": "http://localhost:8000/images/banner2.jpg",
-            "linkUrl": "http://item.atguigu.cn/21.html",
-            "sort": 0
-        },
-        {
-            "id": 2,
-            "title": "华为 HUAWEI P40 麒麟990 5G SoC芯片 5000万超感知徕卡三摄",
-            "imageUrl": "http://localhost:8000/images/banner3.jpg",
-            "linkUrl": "http://item.atguigu.cn/16.html",
-            "sort": 1
-        },
-        {
-            "id": 4,
-            "title": "华为 HUAWEI P40 麒麟990 5G SoC芯片 5000万超感知徕卡三摄",
-            "imageUrl": "http://localhost:8000/images/banner4.jpg",
-            "linkUrl": "http://item.atguigu.cn/16.html",
-            "sort": 1
-        }
-    ],
-    "ok": true
-}
+
 
 
 // 所有商品列表
-const goodsList =  [
-    {
-        "id": 1,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 2,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 3,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 4,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 5,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 6,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 7,
-        "defaultImg": "http://localhost:8000/images/mobile06.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 8,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 9,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 10,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 11,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 12,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 13,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 14,
-        "defaultImg": "http://localhost:8000/images/mobile06.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 15,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 16,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 17,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 18,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 19,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 20,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 21,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 22,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 23,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 24,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 25,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 26,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 27,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 28,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 29,
-        "defaultImg": "http://localhost:8000/images/mobile06.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 30,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 31,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 32,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 33,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 34,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 35,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 36,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 37,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 38,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 39,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 40,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 41,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 42,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 43,
-        "defaultImg": "http://localhost:8000/images/mobile06.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 44,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 45,
-        "defaultImg": "http://localhost:8000/images/mobile06.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 46,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 47,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 48,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 49,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 51,
-        "defaultImg": "http://localhost:8000/images/mobile06.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 52,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 53,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 54,
-        "defaultImg": "http://localhost:8000/images/mobile03.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 55,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 56,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 57,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 58,
-        "defaultImg": "http://localhost:8000/images/mobile02.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 59,
-        "defaultImg": "http://localhost:8000/images/mobile01.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 60,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 61,
-        "defaultImg": "http://localhost:8000/images/mobile04.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-    {
-        "id": 50,
-        "defaultImg": "http://localhost:8000/images/mobile05.png",
-        "title": "Apple iPhone 11 (A2223)",
-        "price": 6088,
-        "createTime": null,
-        "tmId": null,
-        "tmName": null,
-        "category1Id": null,
-        "category1Name": null,
-        "category2Id": null,
-        "category2Name": null,
-        "category3Id": null,
-        "category3Name": null,
-        "hotScore": 0,
-        "attrs": "Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)"
-    },
-]
+
 
 // Search页面的数据
-const searchData = {
-    "code": 200,
-    "message": "成功",
-    "data": {
-        "trademarkList": [
-            {
-                "tmId": 1,
-                "tmName": "苹果"
-            },
-            {
-                "tmId": 2,
-                "tmName": "华为"
-            },
-            {
-                "tmId": 3,
-                "tmName": "华为"
-            },
-            {
-                "tmId": 4,
-                "tmName": "华为"
-            },
-            {
-                "tmId": 5,
-                "tmName": "华为"
-            },
-            {
-                "tmId": 6,
-                "tmName": "华为"
-            },
-            {
-                "tmId": 7,
-                "tmName": "索尼"
-            },
-            {
-                "tmId": 8,
-                "tmName": "索尼"
-            },
-            {
-                "tmId": 9,
-                "tmName": "小米"
-            },
-        ],
-        "attrsList": [
-            {
-                "attrId": 2,
-                "attrValueList": [
-                    "GSM（移动/联通2G）",
-                    "电信2G",
-                    "电信3G",
-                    "移动3G",
-                    "联通3G",
-                    "联通4G",
-                    "电信3G",
-                    "移动3G",
-                    "联通3G",
-                    "联通4G"
-                ],
-                "attrName": "网络制式"
-            },
-            {
-                "attrId": 3,
-                "attrValueList": [
-                    "4.0-4.9英寸",
-                    "4.0-4.9英寸"
-                ],
-                "attrName": "显示屏尺寸"
-            },
-            {
-                "attrId": 4,
-                "attrValueList": [
-                    "1200万以上",
-                    "800-1199万",
-                    "1200-1599万",
-                    "1600万以上无摄像头"
-                ],
-                "attrName": "摄像头像素"
-            },
-            {
-                "attrId": 5,
-                "attrValueList": [
-                    "0-500元",
-                    "500-1199元",
-                    "1000-1500元",
-                    "2000-3000元",
-                    "3000元以上"
-                ],
-                "attrName": "价格"
-            },
-            {
-                "attrId": 6,
-                "attrValueList": [
-                    "特点",
-                    "系统",
-                    "手机内存",
-                    "单卡双卡",
-                    "其他"
-                ],
-                "attrName": "更多筛选项"
-            },
 
-        ],
-        goodsList,
-        "total": 8,
-        "pageSize": 2,
-        "pageNo": 1,
-        "totalPages": 4
-    },
-    "ok": true
-};
 let n = 1;
 
 // 商品详情
-const datailInfo ={
-    "code": 200,
-    "message": "成功",
-    "data": {
-        "valuesSkuJson": "{\"3|5|7\":6,\"3|4|7\":2,\"2|4|7\":3,\"1|5|7\":5,\"1|4|7\":1,\"2|5|7\":4}",
-        "price": 5499,
-        "categoryView": {
-            "id": 61,
-            "category1Id": 2,
-            "category1Name": "手机",
-            "category2Id": 13,
-            "category2Name": "手机通讯",
-            "category3Id": 61,
-            "category3Name": "手机"
-        },
-        "spuSaleAttrList": [
-            {
-                "id": 1,
-                "spuId": 1,
-                "baseSaleAttrId": 1,
-                "saleAttrName": "选择颜色",
-                "spuSaleAttrValueList": [
-                    {
-                        "id": 2,
-                        "spuId": 1,
-                        "baseSaleAttrId": 1,
-                        "saleAttrValueName": "黑色",
-                        "saleAttrName": "选择颜色",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 3,
-                        "spuId": 1,
-                        "baseSaleAttrId": 1,
-                        "saleAttrValueName": "金色",
-                        "saleAttrName": "选择颜色",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 4,
-                        "spuId": 1,
-                        "baseSaleAttrId": 1,
-                        "saleAttrValueName": "银色",
-                        "saleAttrName": "选择颜色",
-                        "isChecked": "0"
-                    },
-                ]
-            },
-            {
-                "id": 5,
-                "spuId": 1,
-                "baseSaleAttrId": 2,
-                "saleAttrName": "选择版本",
-                "spuSaleAttrValueList": [
-                    {
-                        "id": 6,
-                        "spuId": 1,
-                        "baseSaleAttrId": 2,
-                        "saleAttrValueName": "16GB",
-                        "saleAttrName": "选择版本",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 7,
-                        "spuId": 1,
-                        "baseSaleAttrId": 2,
-                        "saleAttrValueName": "64GB",
-                        "saleAttrName": "选择版本",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 8,
-                        "spuId": 1,
-                        "baseSaleAttrId": 2,
-                        "saleAttrValueName": "128GB",
-                        "saleAttrName": "选择版本",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 9,
-                        "spuId": 1,
-                        "baseSaleAttrId": 2,
-                        "saleAttrValueName": "256GB",
-                        "saleAttrName": "选择版本",
-                        "isChecked": "0"
-                    },
-                ]
-            },
-            {
-                "id": 10,
-                "spuId": 1,
-                "baseSaleAttrId": 2,
-                "saleAttrName": "选择版本",
-                "spuSaleAttrValueList": [
-                    {
-                        "id": 11,
-                        "spuId": 1,
-                        "baseSaleAttrId": 2,
-                        "saleAttrValueName": "公开版",
-                        "saleAttrName": "选择版本",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 12,
-                        "spuId": 1,
-                        "baseSaleAttrId": 2,
-                        "saleAttrValueName": "移动版",
-                        "saleAttrName": "选择版本",
-                        "isChecked": "0"
-                    },
-                    
-                ]
-            },
-            {
-                "id": 13,
-                "spuId": 1,
-                "baseSaleAttrId": 3,
-                "saleAttrName": "选择套装",
-                "spuSaleAttrValueList": [
-                    {
-                        "id": 14,
-                        "spuId": 1,
-                        "baseSaleAttrId": 3,
-                        "saleAttrValueName": "官方标配",
-                        "saleAttrName": "选择套装",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 15,
-                        "spuId": 1,
-                        "baseSaleAttrId": 3,
-                        "saleAttrValueName": "优惠移动版",
-                        "saleAttrName": "选择套装",
-                        "isChecked": "0"
-                    },
-                    {
-                        "id": 16,
-                        "spuId": 1,
-                        "baseSaleAttrId": 3,
-                        "saleAttrValueName": "电信优惠版",
-                        "saleAttrName": "选择套装",
-                        "isChecked": "0"
-                    },
-                ]
-            }
-        ],
-        "skuInfo": {
-            "id": 2,
-            "spuId": 1,
-            "price": 5499,
-            "skuName": "Apple iPhone 11 (A2223) 64GB 红色 移动联通电信双卡双待",
-            "skuDesc": "主体\n入网型号\nA2223\n品牌\nApple\n产品名称\niPhone 11\n上市年份\n2019年\n上市月份\n9月\n基本信息\n机身颜色\n红色\n机身长度（mm）\n150.9\n机身重量（g）\n194\n机身材质工艺\n以官网信息为准\n机身宽度（mm）\n75.7\n机身材质分类\n玻璃后盖\n机身厚度（mm）\n8.3\n运营商标志或内容\n无",
-            "weight": "0.47",
-            "tmId": 1,
-            "category3Id": 61,
-            "skuDefaultImg": "http://localhost:8000/images/s1.png",
-            "isSale": 1,
-            "skuImageList": [
-                {
-                    "id": 6,
-                    "skuId": 2,
-                    "imgName": "s1.jpg",
-                    "imgUrl": "http://localhost:8000/images/s1.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 7,
-                    "skuId": 2,
-                    "imgName": "s2.jpg",
-                    "imgUrl": "http://localhost:8000/images/s2.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 8,
-                    "skuId": 2,
-                    "imgName": "s3.jpg",
-                    "imgUrl": "http://localhost:8000/images/s3.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 9,
-                    "skuId": 2,
-                    "imgName": "s1.jpg",
-                    "imgUrl": "http://localhost:8000/images/s1.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 10,
-                    "skuId": 2,
-                    "imgName": "s2.jpg",
-                    "imgUrl": "http://localhost:8000/images/s2.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 11,
-                    "skuId": 2,
-                    "imgName": "s3.jpg",
-                    "imgUrl": "http://localhost:8000/images/s3.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 12,
-                    "skuId": 2,
-                    "imgName": "s1.jpg",
-                    "imgUrl": "http://localhost:8000/images/s1.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 13,
-                    "skuId": 2,
-                    "imgName": "s2.jpg",
-                    "imgUrl": "http://localhost:8000/images/s2.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-                {
-                    "id": 14,
-                    "skuId": 2,
-                    "imgName": "s3.jpg",
-                    "imgUrl": "http://localhost:8000/images/s3.png",
-                    "spuImgId": 2,
-                    "isDefault": "0"
-                },
-            ],
-            "skuAttrValueList": [
-                {
-                    "id": 15,
-                    "attrId": 1,
-                    "valueId": 6,
-                    "skuId": 2
-                },
-            ],
-            "skuSaleAttrValueList": null
-        }
-    },
-    "ok": true
-}
+
 
 // 添加购物车后的状态返回
-const addCarState ={
+const addCarState = {
     "code": 200,
     "message": "成功",
     "data": null,
@@ -1718,36 +34,6 @@ const addCarState ={
 
 
 
-
-const ShopCartList = {
-    "code": 200,
-    "message": "成功",
-    "data": [
-        {
-            "id": 61,
-            "userId": "2",
-            "skuId": 4,
-            "cartPrice": 5999,
-            "skuNum": 4,
-            "imgUrl": "http://192.168.200.128:8080xxx.jpg",
-            "skuName": "Apple iPhone 11 (A2223) ",
-            "isChecked": 1,
-            "skuPrice": 5999
-        },
-        {
-            "id": 62,
-            "userId": "2",
-            "skuId": 2,
-            "cartPrice": 5499,
-            "skuNum": 1,
-            "imgUrl": "http://192.168.200.128:8080/yyyy.jpg",
-            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
-            "isChecked": 0,
-            "skuPrice": 5499
-        }
-    ],
-    "ok": true
-}
 
 const emptyShopCartList = {
     "code": 200,
@@ -1764,14 +50,30 @@ app.use(express.static('asset'))
 // 请求物品分类
 app.get('/api/product/getBaseCategoryList', (request, response) => {
     console.log('有人请求了，请求的地址是：', request.url, n++);
-    response.send(BaseCategoryLIst);
+    // response.send(BaseCategoryLIst);
+    // 直接返回文件数据
+    response.sendFile('BaseCategoryLIst.json', { root: __dirname + "/asset/data" }, function (err) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(__dirname + '/asset/data');
+        }
+    })
 })
 
 
 // 首页轮播广告
 app.get('/api/cms/banner', (request, response) => {
     console.log('有人请求了，请求地址是：', request.url, n++);
-    response.send(HomeCarouselBannerData);
+    // response.send(HomeCarouselBannerData);
+    // 直接返回文件数据
+    response.sendFile('HomeCarouselBannerData.json', { root: __dirname + "/asset/data" }, function (err) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(__dirname + '/asset/data');
+        }
+    })
 
 })
 /* 
@@ -1785,6 +87,11 @@ app.post('/api/list', (request, response) => {
     // 响应体设置内容类型
     // response.setHeader('Content-Type','text/plain');
     // 如果请求中有trademark就更改列表，观察有没有数据渲染
+    const searchData = fs.readFileSync('./asset/data/searchData.json', { flag: "a+" }, function (err) {
+        if (err) {
+            throw err;
+        }
+    })
     if (request.body.trademark) {
         response.send({
             ...searchData,
@@ -1798,8 +105,17 @@ app.post('/api/list', (request, response) => {
                 ]
             }
         });
-    } else{
-        response.send(searchData);
+    } else {
+        // 请求体中没有携带trademark就直接把文件返回过去喽
+        // response.send(searchData);
+        // 直接返回文件数据
+        response.sendFile('searchData.json', { root: __dirname + "/asset/data" }, function (err) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(__dirname + '/asset/data');
+            }
+        })
     }
 
     console.log('有人请求了，请求地址是：', request.url, request.body, n++);
@@ -1807,57 +123,378 @@ app.post('/api/list', (request, response) => {
 })
 
 // 详情页的内容
-app.get('/api/item/:skuId?', (request,response) => {
+app.get('/api/item/:skuId?', (request, response) => {
     console.log('有人请求了，请求地址是：', request.url, n++);
-    response.send(datailInfo);
+    // response.send(datailInfo);
+    response.sendFile('datailInfo.json', { root: __dirname + "/asset/data" }, function (err) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(__dirname + '/asset/data');
+        }
+    })
 
 })
 
 
 // 添加购物车后是否添加成功。？标识模糊匹配，有没有skuId都能匹配上，
-// 两个都要加，因为如果只加skuId，如果只有一个参数请求一过来发现skuId可有可无，那就被认为是skuNum的值
-app.post('/api/cart/addToCart/:skuId?/:skuNum?',(request,response)=>{
-    console.log('有人请求了，请求地址是：', request.url, n++);
-    let {skuId, skuNum} = request.params.skuNum;
+/* 
 
-        /* let addGoods = {}
-        goodsList.forEach ((goods) => {
-          if (goods.id == skuId){
-            //   找到被添加进购物车的goods，添加进ShopCartList中
-            addGoods = {
-                // "userId":localStorage.getItem('USER_KEY'),
-                "cartPrice":goods.price,
-                skuNum,
-                "imgUrl":goods.defaultImg,
-                "skuName":goods.title,
-                "isChecked":"1",
-                "skuPrice":goods.price
+    这一个请求要处理：
+        通过传过来的skuId去goodsList中找对应的商品添加到ShopCartList中，如果ShopCartList中已经存在
+        那就把那一条替换掉
+    格外注意在这里读取到的数据，是buffer类型的，readFile过来后先toString()一下转成正常的数据，然后可以JSON.parse一下
+    不能在循环发送返回，会报错 --Cannot set headers after they are sent to the client--
+    如果在循环中一直没有设置返回体，在postman中会一直显示正在等待返回体
+    在nodejs中记得用闭包处理for循环，不然for循环中拿到的一直都是最后的那个值
+*/
+// 两个都要加，因为如果只加skuId，如果只有一个参数请求一过来发现skuId可有可无，那就被认为是skuNum的值
+app.post('/api/cart/addToCart/:skuId?/:skuNum?', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    let { skuId, skuNum } = request.params;
+
+    // 读取商品列表，通过skuId找到被添加进购物车的信息
+    const goodsL = JSON.parse(fs.readFileSync('./asset/data/goodsList.json', { flag: "a+" }, function (err, data) {
+        if (err) {
+            throw err;
+        }
+        return data;
+    }).toString());  //读取出来的是二进制，记得转换一下再转成对象！！！
+
+    // 读取购物车列表
+    let cart = JSON.parse(fs.readFileSync('./asset/data/ShopCartList.json', { flag: 'a+' }, function (err, data) {
+        if (err) {
+            throw err;
+        }
+        return data;
+    }).toString());
+
+    let addGoods = {};
+    // console.log(goodsL);
+    // goodsL.forEach((goods) => {
+    for (let i = 0; i < goodsL.length; i++) {
+        // 用闭包哦，在nodejs里！！！
+        (function (i) {
+            if (goodsL[i].id == skuId) {
+                //   找到被添加进购物车的goods，添加进ShopCartList中
+                addGoods = {
+                    "id": parseInt(skuId),
+                    "userId": request.get('userTempId'),
+                    "skuId": parseInt(skuId),
+                    "cartPrice": goodsL[i].price,
+                    "skuNum": parseInt(skuNum),
+                    "imgUrl": goodsL[i].defaultImg,
+                    "skuName": goodsL[i].title,
+                    "isChecked": 1,
+                    "skuPrice": goodsL[i].price
+                }
+                // 把新的商品推入到购物车列表数据中
+                if (cart.data.length == 0) {     //如果当前购物车列表为空，直接添加进去就完事了
+                    cart.data.push(addGoods);
+                } else {
+                    // 通过try...catch跳出循环，搭配throw new error
+                    try {
+                        cart.data.forEach((cartGood, index, cartArr) => {
+                            if (cartGood.id != skuId) {
+                                if (index >= cartArr.length - 1) {
+                                    // 如果遍历到最后一个 id还是不一样，那就开始向数组中添加
+                                    // 如果没有这一层判断，那么每次遇到一个不一样的id就添加，要判断是不是全遍历过了，然后再添加一个
+                                    cart.data.push(addGoods);
+                                    console.log('添加成功，被添加的id：', addGoods.id);
+                                    // return true;
+                                }
+
+                            } else {
+                                // 一旦找到id匹配上的，马上替换
+
+                                // 如果数据中已存在对应商品，直接把最新的这一条数据给他，直接替换了，与视频里不一样，那个是以skuNum操作的
+                                //找到这一个元素的下标，然后替换
+
+                                cartArr[index] = addGoods;
+                                console.log('替换成功，被替换的id：', addGoods.id);
+                                throw new Error('hasFoundEqualGodos')
+                            }
+
+                        })
+                    } catch (error) {
+                        if (error.message != 'hasFoundEqualGodos') throw error;
+                    }
+
+
+                }
+
+
+
+                // 写入添加购物车后新的数据，注意啊把数据转换成json再转过去，不然不行的
+                fs.writeFileSync('./asset/data/ShopCartList.json', JSON.stringify(cart), function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log('----------新增成功-------------');
+                })
+                // 返回成功的状态
+                response.sendFile('addCarState.json', { root: __dirname + "/asset/data" }, function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                });
+                return;
             }
-            ShopCartList.data.push(addGoods);
-            response.send(addCarState);
-            return;
-          } 
-        });
-        if (!addGoods) {
-            response.send({
-                code:"404"
-            })
-            return;
-        } */
-        response.send(addCarState);
+        })(i);
+
+    };
+    if (!addGoods) {
+        response.send({
+            "code": '404'
+        })
+    }
 })
 
 // 请求购物车列表
-app.get('/api/cart/cartList',(request,response)=>{
+app.get('/api/cart/cartList', (request, response) => {
     console.log('有人请求了，请求地址是：', request.url, n++);
-    if (request.get('userTempId')){
-        // 如果请求头中携带了用户标识，那么就发挥一个有效的，不然就是一个空的没有商品数据的
-        response.send(ShopCartList);
+    if (request.get('userTempId')) {
+        // 如果请求头中携带了用户标识，那么就发挥一个有   效的，不然就是一个空的没有商品数据的
+        // response.send(ShopCartList);
+        response.sendFile('ShopCartList.json', { root: __dirname + '/asset/data' }, function (err) {
+            if (err) throw err;
+        })
     } else {
-        response.send(emptyShopCartList)
+        response.send(emptyShopCartList);
 
     }
+});
+
+// 改变商品选中状态的请求
+// get
+// 参数：skuId   商品ID
+//      isChecked   商品选中状态
+//                  0代表取消选中
+//                  1代表选中
+
+// 读取购物车中的商品，然后遍历找到被更改的那一条，然后改isChecked
+app.get('/api/cart/checkCart/:skuId?/:isChecked?', function (request, response) {
+
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    // 拿到skuId与isChecked
+    let { skuId, isChecked } = request.params;
+
+    // 读取数据文件
+    let cartList = {};
+    fs.readFile('./asset/data/ShopCartList.json', (err, data) => {
+        if (err) throw err;
+        cartList = JSON.parse(data.toString());
+        try {
+            cartList.data.forEach((cart, index, arr) => {
+                // 遍历找到那一个元素，然后更改属性值
+                if (cart.id == skuId) {
+                    // request参数过来是String类型的
+                    arr[index].isChecked = parseInt(isChecked);
+                    // 
+                    fs.writeFile('./asset/data/ShopCartList.json', JSON.stringify(cartList), function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        console.log('----------修改' + skuId + '状态成功-------------');
+
+                    })
+
+                    response.send({
+                        "code": 200,
+                        "message": "成功",
+                        "data": null,
+                        "ok": true
+                    })
+                    // 写入完马上退出这个forEach循环
+                    throw new Error('hasFoundisChecked');
+                }
+            })
+        } catch (error) {
+            if (error.message != 'hasFoundisChecked') throw error;
+        }
+    });
+
+
 })
+
+// 删除购物车
+// /api/cart/deleteCart/{skuId}
+// DELETE
+// 参数skuId   商品Id
+
+
+app.delete('/api/cart/deleteCart/:skuId?', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    let skuId = request.params.skuId;
+    let cartList = {};
+    fs.readFile('./asset/data/ShopCartList.json', (err, data) => {
+        if (err) throw err;
+
+        cartList = JSON.parse(data.toString());
+
+        try {
+            cartList.data.forEach((item, index, arr) => {
+                // 遍历找到那一个
+                if (item.id == skuId) {
+                    arr.splice(index, 1);
+                    // 开始写入
+                    fs.writeFile('./asset/data/ShopCartList.json', JSON.stringify(cartList), function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        console.log('----------删除' + skuId + '状态成功-------------');
+                        // 设置响应体
+                        response.send({
+                            "code": 200,
+                            "message": "成功",
+                            "data": null,
+                            "ok": true
+                        })
+                    })
+                    throw new Error('hasFoundDelete');
+                }
+
+            })
+        } catch (error) {
+            if (error.message != 'hasFoundDelete') throw error;
+        }
+    })
+})
+
+
+/* 
+    /api/user/passport/register
+    注册用户
+    POST
+    请求体参数：
+        手机号 string
+        密码   string
+
+    
+*/
+
+// 获取请求体中的数据，然后写入到users.json中
+app.post('/api/user/passport/register', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+
+    let { phone, password } = request.body;
+    console.log(phone, password);
+    let users = {};
+    fs.readFile('./asset/data/users.json', (err, data) => {
+        if (err) throw err;
+        users = JSON.parse(data.toString());
+
+        // 如果用户数组长度为0，直接添加进去
+        if (users.data.length == 0) {
+            users.data.push({
+                phone,
+                password,
+            });
+            fs.writeFile('./asset/data/users.json', JSON.stringify(users), (err) => {
+                if (err) throw err;
+                response.send({
+                    "code": 200,
+                    "message": "成功",
+                    "data": null,
+                    "ok": true
+                })
+            })
+        } else {
+            try {
+                console.log(users.data);
+                users.data.forEach((item, index, arr) => {
+                    if (item.phone != phone) {
+                        if (index >= arr.length - 1) {
+                            //   遍历一遍没发现有一样的phone，而且已经遍历到了最后一个，才能添加，如果说遍历不到最后一个发现一样的，就不会进入上一个if里面
+                            arr.push({
+                                phone,
+                                password,
+                            })
+                            fs.writeFile('./asset/data/users.json', JSON.stringify(users), (err) => {
+                                if (err) throw err;
+                                response.send({
+                                    "code": 200,
+                                    "message": "成功",
+                                    "data": null,
+                                    "ok": true
+                                })
+                                throw new Error('success');
+                            })
+                        }
+                    } else {
+                        response.send({
+                            "code": 200,
+                            "message": "该用户已被注册"
+                        })
+                    }
+                })
+            } catch (error) {
+                if (error.message != 'success') {
+                    throw error;
+                }
+            }
+        }
+
+    })
+})
+// 登录/api/user/passport/login
+// POST
+// 参数： phone,password
+
+app.post('/api/user/passport/login', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    let { phone, password } = request.body;
+    let users = {};
+    fs.readFile('./asset/data/users.json', (err, data) => {
+        if (err) throw err;
+        users = JSON.parse(data.toString());
+        try {
+            users.data.forEach((item, index, arr) => {
+                if (item.phone == phone && item.password == password) {
+                    response.send({
+                        "code": 200,
+                        "message": "成功",
+                        "data": {
+                            "nickName": "Administrator",
+                            "name": "Admin",
+                            "token": "90aa16f24d04c7d882051412f9ec45b",
+                        },
+                        "ok": true
+                    }
+                    )
+                    throw new Error('found user success');
+                } else {
+                    if (index == arr.length - 1) {
+                        // 到最后一个了还没匹配上手机号，那就是没这用户
+                        response.send({
+                            "code": 201,
+                            "message": "失败",
+                            "data": null,
+                            "ok": false
+                        })
+                        throw new Error('手机号或密码输入错误');
+                    }
+                }
+            })
+        } catch (error) {
+            if (error.message != 'found user success' && error.message != '手机号或密码输入错误') {
+                throw error;
+            }
+        }
+    })
+})
+
+// api/user/passport/auth/getUserInfo
+// 获取用户数据
+// get
+app.get('/api/user/passport/auth/getUserInfo',(request,response) =>{
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    response.send({
+        "code":200,
+        "data":[]
+    })
+})
+
 
 app.listen(8000, () => {
     let n = 1;

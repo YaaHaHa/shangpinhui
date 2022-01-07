@@ -157,6 +157,7 @@ async reqAddCartSuccess({commit},{skuId,skuNum}){
     }
 
 ```
+    在添加购物车这一功能中，需要发送数据然后得到后台的回应后才进行下一步，所以搭配try...catch与异步action
 
 ### change与blur不同
 change时，输入框失去焦点，如果value改变了，那就触发
@@ -183,3 +184,104 @@ blur是，不管value变不变，都会触发
 ```
 
 ### history与hash模式
+
+
+### nodejs中
+    fs文件管理系统，fs.readerFile()获取到的是buffer数据，需要toString()一下转换一下，然后可能还需要再JSON.parse()转一下
+>   因为node只认识字符串或二进制，所以一般传输时数据一定要转换成json
+
+    nodejs中可以forEach，不担心遍历的i是最后一个
+```js
+// 把新的商品推入到购物车列表数据中
+    if (cart.data.length == 0){     //如果当前购物车列表为空，直接添加进去就完事了
+        cart.data.push(addGoods);
+    } else {
+            cart.data.forEach((cartGood,index,cartArr)=>{
+                if (cartGood.id != skuId){
+                    if (index >= cartArr.length-1){
+                        // 如果遍历到最后一个 id还是不一样，那就开始向数组中添加
+                        // 如果没有这一层判断，那么每次遇到一个不一样的id就添加，要判断是不是全遍历过了，然后再添加一个
+                        cart.data.push(addGoods);
+                        console.log('添加成功，被添加的id：',addGoods.id);
+                        // return true;
+                    }
+                    
+                } else {
+                    // 一旦找到id匹配上的，马上替换
+
+                    // 如果数据中已存在对应商品，直接把最新的这一条数据给他，直接替换了，与视频里不一样，那个是以skuNum操作的
+                        //找到这一个元素的下标，然后替换
+                    
+                    cartArr[index] = addGoods;
+                    console.log('替换成功，被替换的id：',addGoods.id);
+                    throw new Error('hasFoundEqualGodos')
+                }
+                
+            })
+        } 
+    }
+```
+> 不是最完美的方案：向数组中添加不重复的元素，要注意，一定是遍历了所有的元素，比较了所有的元素后才决定是不是添加，
+>   而不是简单的if (item == value){arr.push(value)}
+>       这样的效果是：数组中有多少和value不一样的元素，就添加多少个value
+>   如果 if (item == value){ if(index == arr.length-1){arr.push(value)} }
+>       那样在匹配到最后一个时，才会添加一个
+
+>  用try..catch搭配throw err跳出forEach循环
+```js
+
+    // 把新的商品推入到购物车列表数据中
+    if (cart.data.length == 0){     //如果当前购物车列表为空，直接添加进去就完事了
+        cart.data.push(addGoods);
+    } else {
+        // 通过try...catch跳出循环，同throw跳出循环
+        try {
+            cart.data.forEach((cartGood,index,cartArr)=>{
+                if (cartGood.id != skuId){
+                    if (index >= cartArr.length-1){
+                        // 如果遍历到最后一个 id还是不一样，那就开始向数组中添加
+                        // 如果没有这一层判断，那么每次遇到一个不一样的id就添加，要判断是不是全遍历过了，然后再添加一个
+                        cart.data.push(addGoods);
+                        console.log('添加成功，被添加的id：',addGoods.id);
+                        // return true;
+                    }
+                    
+                } else {
+                    // 一旦找到id匹配上的，马上替换
+
+                    // 如果数据中已存在对应商品，直接把最新的这一条数据给他，直接替换了，与视频里不一样，那个是以skuNum操作的
+                        //找到这一个元素的下标，然后替换
+                    
+                    cartArr[index] = addGoods;
+                    console.log('替换成功，被替换的id：',addGoods.id);
+                    throw new Error('hasFoundEqualGodos')
+                }
+                
+            })
+        } catch (error) {
+            if (error.message != 'hasFoundEqualGodos') throw error;
+        }
+        
+
+    }
+```
+
+
+### 在vuex中的actions
+他的第一个参数时context，实际上就是当前的store，而且dispatch就是把那个action拿过来执行了一下，
+    所以在组件中调用dispatch时,就当做拿过来执行了一遍就可以
+
+
+### 遍历中的if中排他思想
+对于那些不需要处理的遍历，直接`return`返回就是了
+
+
+### 如果没有这一对应的locatStore，就返回null！！！
+    let userTempId = localStorage.getItem('USER_KEY')
+
+### 统计用reduce
+
+### 路由守卫
+全局前置守卫：刚过来匹配的时候就拿捏了
+全局解析守卫：在匹配的过程中拿捏
+全局后置守卫：已经跳过去了才拿捏

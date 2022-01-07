@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 import routes from './routes'
 
 
-export default new VueRouter({
+const router =  new VueRouter({
   mode: 'history',
   routes,
   scrollBehavior(to, from, savedPosition) {
@@ -52,3 +52,21 @@ VueRouter.prototype.replace = function (location, onResolve, onReject) {
     return Promise.reject(err)
   })
 }
+
+
+router.beforeEach((to, from, next) => {
+  // 再跳转任何路由前看看有没有token，需不需要有用户相关信息的展示
+  let token = localStorage.setItem('TOKEN');
+  if (token){
+    if (to.path === "/login"){   // 有token，说明之前登录过,直接让他去首页
+      next('/');
+    } else {      // 如果有token，且要去的不是login，那就要看有没有他的数据
+      
+    }
+  } else {
+    // 如果没有token，只能访问到一部分路由
+    next();
+  }
+})
+
+export default router;

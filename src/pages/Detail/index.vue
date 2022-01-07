@@ -380,15 +380,16 @@ import { mapGetters } from 'vuex'
       // 跳转到购物车界面
       async addCart(){
         let {skuId,skuNum} = this;
+        console.log('Detail中的数据：'+skuId,skuNum);
         try{
-          const result = await this.$store.dispatch("shopCar/reqAddCartSuccess",{skuId,skuNum});
+          const result = await this.$store.dispatch("shopCar/reqUpdateCartSuccess",{skuId,skuNum});
           alert('添加购物车成功',result);
-
-          sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo))
+          
+          sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo));
           // 确定添加成功后才跳转到购物车界面
-          this.$router.push('/addCartSuccess?skuNum='+skuNum)
+          this.$router.push('/addCartSuccess?skuNum='+skuNum);
         } catch(err){
-          alert(err.message)
+          alert(err.message);
         }
       }
     },
