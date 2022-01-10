@@ -3,7 +3,7 @@
   函数内部调用ajax函数发送请求
   函数返回的是promise对象？因为请求是异步的，数据也是异步过来的。直接返回数据行不通，为了方便取出异步的结果返回Promise
 */
-import { method } from 'lodash';
+
 import ajax from './ajax.js'
 import mockAjax from './mockAjax'
 
@@ -157,6 +157,68 @@ export const reqLogin = (userInfo) => {
 export const reqUserInfo =() =>{
   return ajax({
     url:'/user/passport/auth/getUserInfo',
+    method:'get'
+  })
+}
+
+
+// 退出登录
+// /api/user/passport/logout
+// get
+
+export const reqUserOut = ()=>{
+  return ajax({
+    url:'/user/passport/logout',
+    method:'get'
+  })
+}
+
+
+// 获取订单信息
+export const reqTrade = ()=>{
+  return ajax({
+    url:'/order/auth/trade',
+    method:'get'
+  })
+}
+
+// 提交订单
+// /api/order/auth/submitOrder?tradeNo={tradeNo}
+// post
+/*
+  traderNo	string	Y	交易编号(拼接在路径中)
+  consignee	string	Y	收件人姓名
+  consigneeTel	string	Y	收件人电话
+  deliveryAddress	string	Y	收件地址
+  paymentWay	string	Y	支付方式
+  (ONLINE代表在线)
+  orderComment	string	Y	订单备注
+  orderDetailList	Array	Y	存储多个商品对象的数组 
+  */
+export const reqSubTrade = (tradeNo,subTrade) =>{
+  return ajax({
+    url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method:'post',
+    data:subTrade
+  })
+}
+
+// 获取订单信息
+// /api/payment/weixin/createNative/{orderId}
+// get
+
+export const reqPayInfo =(orderId) => {
+  return ajax({
+    url:`/payment/weixin/createNative/?orderId=${orderId}`,
+    method:'get',
+  })
+}
+
+
+// 查询支付状态
+export const reqPayState = (orderId) =>{
+  return ajax({
+    url:`/payment/weixin/queryPayStatus/${orderId}`,
     method:'get'
   })
 }

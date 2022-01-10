@@ -8,6 +8,8 @@ Vue.use(VueRouter)
 // 引入路由规则
 import routes from './routes'
 
+import store from '../store'
+
 
 const router =  new VueRouter({
   mode: 'history',
@@ -54,18 +56,41 @@ VueRouter.prototype.replace = function (location, onResolve, onReject) {
 }
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 再跳转任何路由前看看有没有token，需不需要有用户相关信息的展示
-  let token = localStorage.setItem('TOKEN');
+  let token = store.state.userInfo.token;
+  next()
   if (token){
     if (to.path === "/login"){   // 有token，说明之前登录过,直接让他去首页
       next('/');
     } else {      // 如果有token，且要去的不是login，那就要看有没有他的数据
-      
+      let isExist = !!store.state.userInfo.userInfo.userName;  // 转成Boolean值
+      if (!isExist){      // 如果有token，本地却没有他的数据
+        // 尝试获取数据
+        try {
+
+          await store.dispatch('userInfo/requserinfo');   // 发给后台看看token有没有过期
+          next();
+          
+        } catch (error) {
+          // alert ("用户token过期");
+          // 清除本地token，这一个token已经失效，让他去登录
+          store.dispatch('userInfo/requserout');
+          next('/login?redirect='+to.path);  // 这个跳转会携带参数，给login用。因为进入这个判断代表用户在某一页面要跳转，结果没登录，让他去登录，登录成功后才能接着去想去地方，而不是返回首页
+        }
+      } else {
+        // 有token，而且还有数据，直接放行
+        next();
+      }
     }
   } else {
-    // 如果没有token，只能访问到一部分路由
-    next();
+    // 如果没有token，只能访问到一部分路由，订单肯定不能访问
+    if (to.path === '/trade'){
+      next('/login?redirect='+to.path)
+    } else {
+
+      next();
+    }
   }
 })
 

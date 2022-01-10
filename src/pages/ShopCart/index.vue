@@ -56,7 +56,7 @@
           <i class="summoney">{{allMoney}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" href="###"  @click="toTrade">结算</a>
         </div>
       </div>
     </div>
@@ -72,6 +72,10 @@ import { mapState } from 'vuex';
       this.getCartList();
     },
     methods: {
+      // 提交订单页
+      toTrade(){
+        this.$router.push('/trade')
+      },
       // 删除所有被选中的商品
       async removeAll(){
         try {

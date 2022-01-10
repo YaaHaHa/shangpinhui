@@ -3,7 +3,7 @@ const fs = require('fs')
 const app = express();
 // 引入参数解析模块
 const bodyParser = require('body-parser');
-const { response } = require('express');
+const { response, request } = require('express');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json())
@@ -487,13 +487,182 @@ app.post('/api/user/passport/login', (request, response) => {
 // api/user/passport/auth/getUserInfo
 // 获取用户数据
 // get
-app.get('/api/user/passport/auth/getUserInfo',(request,response) =>{
+// 没有效验请求头中的token
+app.get('/api/user/passport/auth/getUserInfo', (request, response) => {
     console.log('有人请求了，请求地址是：', request.url, n++);
     response.send({
-        "code":200,
-        "data":[]
+        "code": 200,
+        "data": {
+            "userName": "Admin",
+
+        }
     })
 })
+
+// 退出登录
+// /api/user/passport/logout
+// get
+// 应该收回这个token，这个token失效，下一次再给一个新的
+app.get('/api/user/passport/logout', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    response.send({
+        "code": 200,
+        "message": "成功",
+        "data": null,
+        "ok": true
+    }
+    )
+})
+
+// 获取订单信息
+// /api/order/auth/trade
+// get
+// 没有身份效验，静态数据，没有和购物车数据想关联
+app.get('/api/order/auth/trade', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+
+    response.send({
+        "code": 200,
+        "message": "成功",
+        "data": {
+            "totalAmount": 196155,
+            "userAddressList": [
+                {
+                    "id": 2,
+                    "userAddress": "翻斗大街翻斗花园二号楼1001室",
+                    "userId": 2,
+                    "consignee": "胡图图",
+                    "phoneNum": "15011111111",
+                    "isDefault": "1"
+                },
+                {
+                    "id": 3,
+                    "userAddress": "翻斗大街翻斗花园二号楼1001室",
+                    "userId": 3,
+                    "consignee": "胡英俊",
+                    "phoneNum": "15011111111",
+                    "isDefault": "1"
+                },
+                {
+                    "id": 4,
+                    "userAddress": "北翻斗大街翻斗花园二号楼1001室",
+                    "userId": 4,
+                    "consignee": "张小丽",
+                    "phoneNum": "15011111111",
+                    "isDefault": "1"
+                }
+            ],
+            "tradeNo": "1b23c1efc8144bfc83e51807f4e71d3a",
+            "totalNum": 3,
+            "detailArrayList": [
+                {
+                    "id": null,
+                    "orderId": null,
+                    "skuId": 4,
+                    "skuName": "哈根达斯",
+                    "imgUrl": "http://localhost:8000/images/test1.jpg",
+                    "orderPrice": 9999,
+                    "skuNum": 1,
+                    "hasStock": null
+                },
+                {
+                    "id": null,
+                    "orderId": null,
+                    "skuId": 5,
+                    "skuName": "大嘴巴子",
+                    "imgUrl": "http://localhost:8000/images/test2.jpg",
+                    "orderPrice": 5999,
+                    "skuNum": 2,
+                    "hasStock": null
+                },
+                {
+                    "id": null,
+                    "orderId": null,
+                    "skuId": 6,
+                    "skuName": "冰淇淋",
+                    "imgUrl": "http://localhost:8000/images/test1.jpg",
+                    "orderPrice": 5999,
+                    "skuNum": 3,
+                    "hasStock": null
+                }
+            ]
+        },
+        "ok": true
+    }
+    )
+
+
+})
+// 提交订单页
+// /api/order/auth/submitOrder?tradeNo={tradeNo}
+// POST
+/*
+traderNo	string	Y	交易编号(拼接在路径中)
+consignee	string	Y	收件人姓名
+consigneeTel	string	Y	收件人电话
+deliveryAddress	string	Y	收件地址
+paymentWay	string	Y	支付方式
+(ONLINE代表在线)
+orderComment	string	Y	订单备注
+orderDetailList	Array	Y	存储多个商品对象的数组 */
+app.post("/api/order/auth/submitOrder", (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    response.send({
+        "code": 200,
+        "message": "成功",
+        "data": 71,   // orderId 订单号
+        "ok": true
+    }
+    )
+})
+
+// 获取订单信息
+// /api/payment/weixin/createNative/{orderId}
+// get
+// orderId
+app.get('/api/payment/weixin/createNative', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+    response.send({
+        "code": 200,
+        "message": "成功",
+        "data": {
+            "codeUrl": "weixin://wxpay/bizpayurl?pr=P0aPBJK",
+            "orderId": 71,
+            "totalFee": 0.01,
+            "resultCode": "SUCCESS"
+        },
+        "ok": true
+    }
+    )
+})
+
+// 获取支付状态，有没有钱转过来
+// /api/payment/weixin/queryPayStatus/{orderId}
+// get
+// 参数 支付订单Id
+app.get('/api/payment/weixin/queryPayStatus/:orderId?', (request, response) => {
+    console.log('有人请求了，请求地址是：', request.url, n++);
+
+    // 支付中
+        response.send(
+            {
+                "code": 200,
+                "message": "支付成功",
+                "data": null,
+                "ok": false
+            }
+
+        )
+
+    // 支付中
+    /* response.send({
+        "code": 205,
+        "message": "支付中",
+        "data": null,
+        "ok": false
+    }) */
+})
+
 
 
 app.listen(8000, () => {

@@ -15,6 +15,10 @@ function getUserTempId(){
     return userTempId;
 }
 
+function setToken (token){
+    localStorage.setItem('TOKEN',token);
+}
+
 // 拿本体token
 function getToken(){
     // 逻辑同上
@@ -22,7 +26,14 @@ function getToken(){
     return token;
 }
 
+// 清除token
+function removeToken(){
+    localStorage.removeItem('TOKEN');
+}
+
 export {
     getUserTempId,
     getToken,
+    setToken,
+    removeToken
 }

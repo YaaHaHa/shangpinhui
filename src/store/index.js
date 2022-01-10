@@ -12,6 +12,7 @@ import userInfo from './modules/userInfo'
 import search from './modules/search'
 import detail from './modules/detail'
 import shopCar from './modules/shopCar'
+import trade from './modules/trade'
 
 Vue.use(Vuex);
 
@@ -43,5 +44,6 @@ export default new Vuex.Store({
         search,
         detail,
         shopCar,
+        trade
     }
 })

@@ -6,15 +6,20 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p></p>
+          <p v-if="userInfo.userName">
+            <a href="javascript:void(0);">{{ userInfo.userName }}</a>
+            <a href="javascript:void(0);" class="register" @click="logout">退出</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
           </p>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
+          <router-link to="/trade">我的订单</router-link>
+          <router-link to="/ShopCart">我的购物车</router-link>
           <a href="###">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>
@@ -56,6 +61,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "Header",
   data() {
@@ -64,21 +70,30 @@ export default {
     };
   },
   methods: {
+    // 退出登录
+    async logout(){
+      try {
+        await this.$store.dispatch('userInfo/requsrout');
+        alert('退出成功');
+      } catch (error) {
+        alert(error.message);
+      }
+    },
     toSearch() {
       // 编程式路由组件要想携带params参数要用name属性！！！！！！！
-      let location ={
-        name:'sousuo'
-      }
+      let location = {
+        name: "sousuo",
+      };
       // 如果数据为空  干脆就不要当做参数传进去，params容易出毛病
       // 如果当前的search是由三级列表点进来的，当前路径就有query参数，再点击搜索的时候把query参数带进来
       const query = this.$route.query;
-      if(this.keyWord){
-        location.params= { keyword: this.keyWord };
+      if (this.keyWord) {
+        location.params = { keyword: this.keyWord };
         // location.query= { keyword2: this.keyWord.toUpperCase() };
-        location.query = query;   //把当前路径下的query参数拿过来连带新输入的params参数一同发送请求
+        location.query = query; //把当前路径下的query参数拿过来连带新输入的params参数一同发送请求
       }
       // 跳转到sousuo，如果当前已经在search中，就replace，方便在导航栏返回
-      if (this.$route.name === 'sousuo'){
+      if (this.$route.name === "sousuo") {
         this.$router.replace(location);
       } else {
         this.$router.push(location);
@@ -87,12 +102,17 @@ export default {
   },
   mounted() {
     // 绑定自定义事件，等Search那边需要就会触发调用
-    this.$bus.$on('clearKeyword',()=>{
-      this.keyWord = '';
-    })
+    this.$bus.$on("clearKeyword", () => {
+      this.keyWord = "";
+    });
   },
   beforeDestroy() {
-    this.$bus.$off('clearKeyword');
+    this.$bus.$off("clearKeyword");
+  },
+  computed: {
+    ...mapState({
+      userInfo: (state) => state.userInfo.userInfo,
+    }),
   },
 };
 </script>
