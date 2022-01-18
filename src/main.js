@@ -13,10 +13,23 @@ Vue.config.productionTip = false
 import store from './store'
 
 
+// 引入按钮HintButton组件
+import HintButton from './components/HintButton'
+Vue.component(HintButton.name,HintButton)
+
 import './pluins/swiper'    //加载swiper配置  
 import './pluins/element-ui'  // 按需引入Element-ui
-
+import './pluins/validate'  // 引入表单验证组件
 import './mocks/mockServer' //加载mock,也就是说拉过来执行一下
+
+import VueLazyload from 'vue-lazyload'
+import loading from './assets/images/lazyloading.gif'
+// 在图片界面没有进入到可视范围前不加载, 在没有得到图片前先显示loading图片
+Vue.use(VueLazyload,{   // 内部自定义了一个指令lazy
+  loading               // 指定未加载得到图片之前的loading图片
+})
+
+
 
 
 

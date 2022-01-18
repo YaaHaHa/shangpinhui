@@ -99,9 +99,11 @@ export default {
   data() {
     return {
       payInfo: {},
-      stateCode:'',
+      stateCode:0,
     };
   },
+
+
   beforeMount() {
     // 组件挂载前先去拿数据
     this.toPayInfo();
@@ -134,6 +136,11 @@ export default {
                   this.timer = null; */
                   // done()
 
+                } else {
+                  clearInterval(this.timer);
+                  this.timer = null;
+                  this.$router.push('/paysuccess')
+                  done()
                 }
               } else {
                 this.$message.warning('请联系客服！');
@@ -147,10 +154,12 @@ export default {
           // 浏览器的一个线程负责的，回调由window调用
             if (!this.timer){   // 防止定时器重复开启，如果已存在定时器就不开启
               
-              this.timer = setInterval(()=>{
-                const result = this.$api.reqPayState(this.payInfo.orderId);
-                if (result === 200){
+                //                    这里的async
+              this.timer = setInterval(async ()=>{
+                const result = await this.$api.reqPayState(this.payInfo.orderId);
+                if (result.code === 200){
                   this.stateCode = 200;
+                  // 如果已拿到支付成功的讯号，关计时器
                   clearInterval(this.timer);
                   // 清掉定时器后，要为null
                   this.timer = null;

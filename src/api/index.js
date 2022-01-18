@@ -209,7 +209,7 @@ export const reqSubTrade = (tradeNo,subTrade) =>{
 
 export const reqPayInfo =(orderId) => {
   return ajax({
-    url:`/payment/weixin/createNative/?orderId=${orderId}`,
+    url:`/payment/weixin/createNative/${orderId}`,
     method:'get',
   })
 }
@@ -219,6 +219,16 @@ export const reqPayInfo =(orderId) => {
 export const reqPayState = (orderId) =>{
   return ajax({
     url:`/payment/weixin/queryPayStatus/${orderId}`,
+    method:'get'
+  })
+}
+
+// 获取订单页信息
+// /api/order/auth/:page?/:limit?
+// 页码    每页数据项
+export const reqOrderInfo = (page, limit) =>{
+  return ajax({
+    url:`/order/auth/${page}/${limit}`,
     method:'get'
   })
 }

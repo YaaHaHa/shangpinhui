@@ -9,7 +9,6 @@ const actions = {
     async reqUpdateCartSuccess({commit},{skuId,skuNum}){
         const result= await requpdateShopCar(skuId,skuNum);
         if (result.code === 200){
-            console.log(result);
             return "ok";
         } else{
             return Promise.reject(new Error('failed'));

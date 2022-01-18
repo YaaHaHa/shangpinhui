@@ -304,3 +304,159 @@ blur是，不管value变不变，都会触发
 >  1. 定时器的标识应保存在全局中，因为清除的时候，好找
 >  2. 为防止定时器重复开启，加一个判断，如果已经存在这个标识，就进不去这个判断不开定时器了，没有就进去开启
 >  3. 定时器清除后，如果有一个变量存储标识，记得把他释放掉，因为清除定时器，并不会释放改变量存储的内容
+
+
+### router-link
+```html
+tbody中不要直接夹杂着router-link，有也要包在dd中
+<dd>
+    <router-link to="/center/myorder">我的订单</router-link>
+</dd>
+
+```
+
+
+
+### Element-ui的引入组件
+Vue.user(Pagination)
+或 Vue.component('el-pagination',Pagination)
+    ```html
+        <!-- 在这个Element-ui的分页组件中，layout布局中要展示的内容，必须实现自定义过，不然就影响整体的效果 -->
+        <!-- 比如布局中的sizes如果没有事先page-sizes初始化一下，那么就只能出现一页 -->
+    <el-pagination
+        :page-size="3"
+        :pager-count="7"
+        :page-sizes="[3,5,10,20]"
+        layout="prev, pager, next, jumper, ->, sizes, total"
+        :total="8"
+        :current-page="page"
+    >
+    ```
+
+
+### 插槽
+使用场景：一般是由父组件中使用子组件
+父组件传递数据给到子组件  子组件props接收数据 然后通过遍历展示数据 但是数据的结构或样式由父组件决定 此时需要将遍历过的数据重新传递给父组件,将要改变的数据部分用<slot>包裹 在<slot>标签中将数据传递给父组件
+父组件接收到子组件传递过来的数据 在template标签中 使用`slot-scope='{结构出来的数据}' `然后进行样式或结构的改变
+例如:
+```html
+	父组件中:isComplete:true或false  1-先将数据传递给子组件 :todos='todos'  4-父组件接收slot-scope="{todo}"子组件传递的数据然后改变结构
+         <List :todos='todos'>
+              <template slot-scope="{todo,index}">
+                <span>{{index}}</span><li :style="{color:todo.isComplete?'red':'yellow'}">{{todo.text}}</li>
+              </template>
+        </List>
+    子组件中:首先props:['todos'] 2-在子组件接收后 遍历展示  3-将遍历后的数据需要发生结构变化的数据传递给父组件
+         <li v-for="(todo, index) in todos" :key="index">
+              <slot :todo='todo' :index='index'>
+                 {{todo.text}}
+               </slot>
+          </li>
+```
+>slot与slot-scope属性是一样的，只不过一个是旧的一个是新的
+
+
+### v-model的原理
+```html
+<!-- v-model实际上就是结合了单项数据绑定与input事件 -->
+    <input type="text" :value="msg" @input="msg = $event.target.value" />
+    <span>我是{{ msg }}</span>
+    <br />
+    <br />
+
+    <!-- 其实如果input事件只作赋值的话就相当于v-model了 -->
+    <input type="text" v-model="msg" />
+    <span>我是{{ msg }}</span>
+    <br />
+    <br />
+    <br />
+
+    <h2>子组件CustomInput</h2>
+    <!-- 把value值传过去给他显示，input是自定义事件 -->
+    <!-- <CustomInput :value='msg' @input="msg = $event"/> -->
+
+    <!-- 简写。如果有:value和input只赋值，那就可以简写 -->
+    <CustomInput v-model="msg" />
+
+
+    CustonInput.vue
+    <!-- 因为这里input并不是赋值，所以不能简写成v-model -->
+    <!-- 这里实现了子与父的通讯，在子里面父子数据同步 -->
+    <input type="text" :value='value' @input="$emit('input',$event.target.value)">
+
+    props:['value']
+```
+
+
+>v-model不但可以用在html的表单类元素上，还可以在组件标签身上使用，
+        组件标签内部一般是有表单元素的
+        他实用的场合是父子之间，最终达到父子数据同步的效果
+
+### .sync实现父子组件数据同步
+```html
+    <h2>不使用sync修改符</h2>
+    <!-- 一个叫update:money的自定义事件 -->
+    <Child :money='money' @update:money="money = $event"/>
+
+
+
+    <h2>使用sync修改符</h2>
+    <Child :money.sync="money"/>
+
+    <h2>使用v-model修改符</h2>
+    <Child2 v-model="money"/>
+
+
+    Chile.vue:
+    <!-- 触发事件的名称必须是update:xxx。.sync的要求就是他 -->
+    <button @click="$emit('update:money',money -= 100)">花钱</button>
+
+    props:['money']
+
+
+    Child2.vue
+    <button @click="$emit('input',value -= 100)">花钱</button>
+
+    props:['value']
+
+```
+*  总结 v-model和.async修饰符都可以实现父子组件数据同步
+    约定俗称
+    1. v-model是当组件当中有表单元素的时候使用
+    2. .async是当子组件中不是表单类元素的时候使用
+>其实类，都可以用，只不过哪个更适合更方便
+    
+
+
+### el-button中的click与dblclick
+```html
+    <!-- click与dblclick的差别 -->
+    <!-- 这里click是自定义事件，而且在el-button组件中有$emit('click',) -->
+    <el-button type="primary" icon="el-icon-position" @click="fn1">点击</el-button>
+
+    <!-- el-button中没有$emit('dblclick',)所以想双击就加.native成原生 -->
+    <el-button type="primary" icon="el-icon-thumb" @dblclick.native="fn2">双击</el-button>
+
+```
+* 内部用click的$emit处理，而dblclick没有$emit去处理，所以想双击就转成原生的
+
+
+### $attrs与$listeners
+
+
+```html
+HintButton.vue
+
+  <a :title="title">
+      <!-- $attrs就是从父哪里传过来的数据，没有被pros接的那部分。用v-bind的完整写法绑定上-->
+      <!-- $listeners是在父那里被绑定的事件 用v-on的完整形式写-->
+    <el-button v-bind="$attrs" v-on="$listeners"/>
+  </a>  
+```
+
+
+### $children与$parent与$refs
+  * $children[index]这样是不可行的，因为顺序问题，不一定每一次都是想要的那个，真想取准确
+        用$refs，二者在堆dom元素时取的是dom对象，但是在对组件对象时取的是组件对象
+    $children用遍历比较方便，$refs单独取一个比较方便。
+  * $parent也能拿到组件对象，但是因为有时不止一个爹，比如Pagination分页器，所以还是谨慎使用

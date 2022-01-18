@@ -55,7 +55,7 @@ VueRouter.prototype.replace = function (location, onResolve, onReject) {
   })
 }
 
-
+// 在处理多个路由的时候用全局守卫，不如不论在任何时候如果没有token都不许调往/pay /center
 router.beforeEach(async (to, from, next) => {
   // 再跳转任何路由前看看有没有token，需不需要有用户相关信息的展示
   let token = store.state.userInfo.token;
@@ -84,14 +84,15 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    // 如果没有token，只能访问到一部分路由，订单肯定不能访问
-    if (to.path === '/trade'){
-      next('/login?redirect='+to.path)
+    // 如果没有token，只能访问到一部分路由，订单肯定不能访问。既没有token，又要访问这些关键路由，就给他跳到登录
+    if (to.path.indexOf('/trade') === 0 || to.path.startsWith('/center') || to.path.startsWith('/pay')){
+      next('/login?redirect='+to.path);
     } else {
 
       next();
     }
   }
 })
+// 剩下的就是路由守卫解决的了。比如从trade跳到pay
 
 export default router;

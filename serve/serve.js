@@ -541,7 +541,7 @@ app.get('/api/order/auth/trade', (request, response) => {
                     "userId": 3,
                     "consignee": "胡英俊",
                     "phoneNum": "15011111111",
-                    "isDefault": "1"
+                    "isDefault": "0"
                 },
                 {
                     "id": 4,
@@ -549,7 +549,7 @@ app.get('/api/order/auth/trade', (request, response) => {
                     "userId": 4,
                     "consignee": "张小丽",
                     "phoneNum": "15011111111",
-                    "isDefault": "1"
+                    "isDefault": "0"
                 }
             ],
             "tradeNo": "1b23c1efc8144bfc83e51807f4e71d3a",
@@ -616,11 +616,11 @@ app.post("/api/order/auth/submitOrder", (request, response) => {
     )
 })
 
-// 获取订单信息
+// 支付信息
 // /api/payment/weixin/createNative/{orderId}
 // get
 // orderId
-app.get('/api/payment/weixin/createNative', (request, response) => {
+app.get('/api/payment/weixin/createNative/:oredrId?', (request, response) => {
     console.log('有人请求了，请求地址是：', request.url, n++);
     response.send({
         "code": 200,
@@ -661,6 +661,463 @@ app.get('/api/payment/weixin/queryPayStatus/:orderId?', (request, response) => {
         "data": null,
         "ok": false
     }) */
+})
+
+
+// 获取我的订单信息
+// /api/order/auth/{page}/{limit}
+// page  页码
+// limit  每页显示数量
+app.get('/api/order/auth/:page?/:limit?',(request,response)=>{
+    console.log('有人请求了，请求地址是：', request.url, n++);
+
+    response.send({
+        "code": 200,
+        "message": "成功",
+        "data": {
+            "records": [
+                {
+                    "id": 70,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 81,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 82,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 83,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 71,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 84,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 85,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 86,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 72,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 87,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 88,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 89,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 73,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 90,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 91,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 92,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 75,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 93,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 94,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 95,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 76,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 96,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 97,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 98,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 77,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 99,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 100,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 101,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                {
+                    "id": 78,
+                    "consignee": "admin",
+                    "consigneeTel": "15011111111",
+                    "totalAmount": 29495,
+                    "orderStatus": "UNPAID",
+                    "userId": 2,
+                    "paymentWay": "ONLINE",
+                    "deliveryAddress": "北京市昌平区2",
+                    "orderComment": "",
+                    "outTradeNo": "ATGUIGU1584247289311481",
+                    "tradeBody": "Apple iPhone 11 (A2223) 128GB手机 双卡双待 A",
+                    "createTime": "2020-03-15 12:41:29",
+                    "expireTime": "2020-03-16 12:41:29",
+                    "processStatus": "UNPAID",
+                    "trackingNo": null,
+                    "parentOrderId": null,
+                    "imgUrl": null,
+                    "orderDetailList": [
+                        {
+                            "id": 102,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part01.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 103,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part02.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                        {
+                            "id": 104,
+                            "orderId": 70,
+                            "skuId": 2,
+                            "skuName": "Apple iPhone 11 (A2223) 64GB 红色",
+                            "imgUrl": "http://127.0.0.1:8000/images/part03.png",
+                            "orderPrice": 5499,
+                            "skuNum": 1,
+                            "hasStock": null
+                        },
+                    
+                    ],
+                    "orderStatusName": "未支付",
+                    "wareId": null
+                },
+                
+            ],
+            "total": 24,
+            "size": 3,
+            "current": 1,
+            "pages": 8
+        },
+        "ok": true
+    }
+    )
 })
 
 

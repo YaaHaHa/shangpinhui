@@ -56,7 +56,7 @@
           <i class="summoney">{{allMoney}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###"  @click="toTrade">结算</a>
+          <a class="sum-btn"  @click="toTrade">结算</a>
         </div>
       </div>
     </div>
@@ -120,7 +120,7 @@ import { mapState } from 'vuex';
       async updateCart(id,num){
         // 把num转换称String类型
         num = num.toString();
-        console.log('ShopCart中的数据'+id,num);
+        // console.log('ShopCart中的数据'+id,num);
         num = num>=1? num : 1; 
         /* 
           需要根据请求过来响应的结果决定要不要下一步，而且await的Promise失败了就会抛出异常

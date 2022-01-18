@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "Pagination",
+  name: "MyPagination",
   data() {
     return {
       myCurrentPage: this.currentPage || 1,
@@ -99,8 +99,10 @@ export default {
   methods: {
     // 切换页数
     sentCurrentPage(page){
-      if (this.currentPage === page) return;
+
+      if (this.MycurrentPage === page) return;
       this.myCurrentPage = page;
+
       // 触发自定义事件，把最新页码传过去再次发送请求
       this.$emit('currentChange',page);
     }
