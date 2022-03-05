@@ -1,1 +1,28 @@
-{"data":[{"phone":"123","password":"111"},{"phone":"1234","password":"111"},{"phone":"111","password":"111111"},{"phone":"","password":""},{"phone":"111111","password":"111111"},{"phone":"000","password":"000"}]}
+{
+    "data": [
+        {
+            "phone": "123",
+            "password": "111"
+        },
+        {
+            "phone": "1234",
+            "password": "111"
+        },
+        {
+            "phone": "111",
+            "password": "111111"
+        },
+        {
+            "phone": "",
+            "password": ""
+        },
+        {
+            "phone": "111111",
+            "password": "111111"
+        },
+        {
+            "phone": "000",
+            "password": "000"
+        }
+    ]
+}

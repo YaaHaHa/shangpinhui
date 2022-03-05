@@ -33,7 +33,7 @@ Vue.use(VueLazyload,{   // 内部自定义了一个指令lazy
 
 
 
-// 测试api
+// api
 import * as API from './api'    //篡成一个对象，因为他是一个一个分别暴露的
 
 

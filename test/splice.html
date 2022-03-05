@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript" >
+        const arr = [
+        {
+            "id": 1,
+            "tmName": "笑",
+            "logoUrl": "http://localhost:8000/images/brandLogo2.jpg"
+        },
+        {
+            "id": 2,
+            "tmName": "不开心",
+            "logoUrl": "http://localhost:8000/images/brandLogo1.jpg"
+        },
+        {
+            "id": 3,
+            "tmName": "笑",
+            "logoUrl": "http://localhost:8000/images/brandLogo2.jpg"
+        },
+        {
+            "id": 4,
+            "tmName": "吃岩浆",
+            "logoUrl": "http://localhost:8000/images/brandLogo3.jpg"
+        },
+        {
+            "id": 5,
+            "tmName": "不开心",
+            "logoUrl": "http://localhost:8000/images/brandLogo1.jpg"
+        },
+        {
+            "id": 6,
+            "tmName": "笑",
+            "logoUrl": "http://localhost:8000/images/brandLogo2.jpg"
+        },
+        {
+            "id": 7,
+            "tmName": "不开心",
+            "logoUrl": "http://localhost:8000/images/brandLogo1.jpg"
+        },
+        {
+            "id": 8,
+            "tmName": "吃岩浆",
+            "logoUrl": "http://localhost:8000/images/brandLogo3.jpg"
+        },
+        {
+            "id": 9,
+            "tmName": "笑",
+            "logoUrl": "http://localhost:8000/images/brandLogo2.jpg"
+        },
+        {
+            "id": 10,
+            "tmName": "吃岩浆",
+            "logoUrl": "http://localhost:8000/images/brandLogo3.jpg"
+        },
+        {
+            "id": 11,
+            "tmName": "不开心",
+            "logoUrl": "http://localhost:8000/images/brandLogo1.jpg"
+        },
+        {
+            "id": 12,
+            "tmName": "笑",
+            "logoUrl": "http://localhost:8000/images/brandLogo2.jpg"
+        },
+        {
+            "id": 13,
+            "tmName": "不开心",
+            "logoUrl": "http://localhost:8000/images/brandLogo1.jpg"
+        },
+        {
+            "id": 14,
+            "tmName": "吃岩浆",
+            "logoUrl": "http://localhost:8000/images/trademarklogo/file_1642933578447.jpg",
+            "tm": "aaa"
+        },
+        {
+            "id": 14,
+            "tmName": "aaa",
+            "logoUrl": "http://localhost:8000/images/trademarklogo/file_1642932149391.jpg"
+        },
+        {
+            "id": 15,
+            "tmName": "叉腰",
+            "logoUrl": "http://localhost:8000/images/trademarklogo/file_1642932184080.jpg"
+        }
+    ]
+
+    arr.forEach((e,index)=>{
+        if (e.id ===15){
+            console.log(arr[index]);
+            const de = arr.splice(index,1);
+            console.log(de);
+        }
+    })
+    </script>    
+</body>
+</html>

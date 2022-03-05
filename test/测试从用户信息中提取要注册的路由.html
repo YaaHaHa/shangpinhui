@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        const allAsyncRoutes = [
+            {
+                path: '/product',
+                name: 'Product',
+                redirect: '/product/trademark/list',
+                meta: { title: '商品管理', icon: 'el-icon-s-goods' },   // 这里必须写，因为这里会决定侧边栏显示的内容
+                children: [
+                    {
+                        path: 'trademark/list',
+                        name: 'Trademark',
+                        meta: { title: '品牌管理' }
+                    },
+                    {
+                        path: 'attr/list',
+                        name: 'Attr',
+                        meta: { title: '属性管理' }
+                    },
+                    {
+                        path: 'sku/list',
+                        name: 'Sku',
+                        meta: { title: 'SKU管理' }
+                    },
+                    {
+                        path: 'spu/list',
+                        name: 'Spu',
+                        meta: { title: 'Spu管理' }
+                    }
+                ]
+            }]
+        const routes = ["Product", "Trademark", "Attr"]
+
+        function filterRoutes(asyncRoutes, routeNames) {
+            let showRoutes = asyncRoutes.filter((item) => {
+                if (routeNames.indexOf(item.name) !== -1) {
+                    if (item.children && item.children.length){
+                        item.children = filterRoutes(item.children,routeNames);
+                    }
+                    return true;
+                }
+            })
+            return showRoutes;
+        }
+        let result = filterRoutes(allAsyncRoutes,routes);
+        console.log(result);
+    </script>
+</body>
+
+</html>
