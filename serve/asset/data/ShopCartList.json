@@ -1,1 +1,51 @@
-{"code":200,"message":"成功","data":[{"id":2,"userId":"c114b170-ad10-4dbd-b5ea-0aae99d62a39","skuId":2,"cartPrice":6088,"skuNum":1,"imgUrl":"http://localhost:8000/images/mobile02.png","skuName":"Apple iPhone 11 (A2223)","isChecked":1,"skuPrice":6088},{"id":6,"userId":"c114b170-ad10-4dbd-b5ea-0aae99d62a39","skuId":6,"cartPrice":6088,"skuNum":4,"imgUrl":"http://localhost:8000/images/mobile05.png","skuName":"Apple iPhone 11 (A2223)","isChecked":0,"skuPrice":6088},{"id":4,"userId":"c114b170-ad10-4dbd-b5ea-0aae99d62a39","skuId":4,"cartPrice":6088,"skuNum":1,"imgUrl":"http://localhost:8000/images/mobile04.png","skuName":"Apple iPhone 11 (A2223)","isChecked":1,"skuPrice":6088},{"id":3,"userId":"c114b170-ad10-4dbd-b5ea-0aae99d62a39","skuId":3,"cartPrice":6088,"skuNum":1,"imgUrl":"http://localhost:8000/images/mobile03.png","skuName":"Apple iPhone 11 (A2223)","isChecked":1,"skuPrice":6088}],"ok":true}
+{
+    "code": 200,
+    "message": "成功",
+    "data": [
+        {
+            "id": 2,
+            "userId": "e64f2b86-bb67-4369-8659-52a3c0a5427f",
+            "skuId": 2,
+            "cartPrice": 6088,
+            "skuNum": 1,
+            "imgUrl": "http://localhost:8000/images/mobile02.png",
+            "skuName": "Apple iPhone 11 (A2223)",
+            "isChecked": 1,
+            "skuPrice": 6088
+        },
+        {
+            "id": 6,
+            "userId": "c114b170-ad10-4dbd-b5ea-0aae99d62a39",
+            "skuId": 6,
+            "cartPrice": 6088,
+            "skuNum": 4,
+            "imgUrl": "http://localhost:8000/images/mobile05.png",
+            "skuName": "Apple iPhone 11 (A2223)",
+            "isChecked": 0,
+            "skuPrice": 6088
+        },
+        {
+            "id": 4,
+            "userId": "c114b170-ad10-4dbd-b5ea-0aae99d62a39",
+            "skuId": 4,
+            "cartPrice": 6088,
+            "skuNum": 1,
+            "imgUrl": "http://localhost:8000/images/mobile04.png",
+            "skuName": "Apple iPhone 11 (A2223)",
+            "isChecked": 1,
+            "skuPrice": 6088
+        },
+        {
+            "id": 3,
+            "userId": "c114b170-ad10-4dbd-b5ea-0aae99d62a39",
+            "skuId": 3,
+            "cartPrice": 6088,
+            "skuNum": 1,
+            "imgUrl": "http://localhost:8000/images/mobile03.png",
+            "skuName": "Apple iPhone 11 (A2223)",
+            "isChecked": 1,
+            "skuPrice": 6088
+        }
+    ],
+    "ok": true
+}

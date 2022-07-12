@@ -19,34 +19,37 @@ import ModelTest from '../pages/Communication/ModelTest/ModelTest.vue'
 import SyncTest from '../pages/Communication/SyncTest/SyncTest.vue'
 import AttrsListenersTest from '../pages/Communication/AttrsListenersTest/AttrsListenersTest.vue'
 import ChildrenParentTest from '../pages/Communication/ChildrenParentTest/ChildrenParentTest.vue'
+import InterQues from '../pages/InterQues'
+import EchartsTest from '../pages/EchartsTest'
+import ActiveLine from '../pages/EchartsTest/components/ActiveLine.vue'
 
 export default [
     {
         path: '/communication',
         component: Communication,
-        children:[
+        children: [
             {
-                path:"scope-slot",
+                path: "scope-slot",
                 component: ScopeSlotTest
             },
             {
-                path:"event",
+                path: "event",
                 component: EventTest
             },
             {
-                path:"model",
+                path: "model",
                 component: ModelTest
             },
             {
-                path:"sync",
+                path: "sync",
                 component: SyncTest
             },
             {
-                path:"attrs-listeners",
+                path: "attrs-listeners",
                 component: AttrsListenersTest
             },
             {
-                path:"children-parent",
+                path: "children-parent",
                 component: ChildrenParentTest
             }
         ]
@@ -79,7 +82,7 @@ export default [
         component: Pay,
         // 单个路由守卫，如果不是从trade来的，不给过
         beforeEnter: (to, from, next) => {
-            if(from.path === '/trade'){
+            if (from.path === '/trade') {
                 next();
             } else {
                 next('/');
@@ -89,8 +92,8 @@ export default [
     {
         path: '/trade',
         component: Trade,
-        beforeEnter: (to,from,next)=>{
-            if (from.path === '/ShopCart'){
+        beforeEnter: (to, from, next) => {
+            if (from.path === '/ShopCart') {
                 next();
             } else {
                 next('/');
@@ -109,12 +112,12 @@ export default [
         path: '/addCartSuccess',
         component: AddCartSuccess,
         // 路由守卫，如果没有商品数据与参数，不给过
-        beforeEnter:(to, from, next)=>{
+        beforeEnter: (to, from, next) => {
             // 这个to是指将要去的路由，这一个回调函数发生在将要跳转到addCartSuccess页面，所以to中含有数据
             let skuNum = to.query.skuNum;
             // console.log(to,from);
             let skuInfo = sessionStorage.getItem('SKUINFO_KEY');
-            if (skuNum && skuInfo){
+            if (skuNum && skuInfo) {
                 next();
             } else {
                 alert('请携带够参数');
@@ -144,4 +147,19 @@ export default [
         component: Register,
         meta: { isHiddenFooter: true }
     },
+    {
+        path: '/test',
+        component: InterQues,
+        meta: { isHiddenFooter: true }
+    },
+    {
+        path:'/echarts',
+        component:EchartsTest,
+        children:[
+            {
+                path:'activeline',
+                component: ActiveLine
+            }
+        ]
+    }
 ]

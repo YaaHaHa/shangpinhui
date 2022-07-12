@@ -12,7 +12,7 @@ import store from '../store'
 
 
 const router =  new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   routes,
   scrollBehavior(to, from, savedPosition) {
     // return 期望滚动到哪个的位置
@@ -68,7 +68,6 @@ router.beforeEach(async (to, from, next) => {
       if (!isExist){      // 如果有token，本地却没有他的数据
         // 尝试获取数据
         try {
-
           await store.dispatch('userInfo/requserinfo');   // 发给后台看看token有没有过期
           next();
           

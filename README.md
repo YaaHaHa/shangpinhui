@@ -460,3 +460,15 @@ HintButton.vue
         用$refs，二者在堆dom元素时取的是dom对象，但是在对组件对象时取的是组件对象
     $children用遍历比较方便，$refs单独取一个比较方便。
   * $parent也能拿到组件对象，但是因为有时不止一个爹，比如Pagination分页器，所以还是谨慎使用
+
+### 关于上线
+* 重置实例密码
+* 设置安全组
+  * 默认给开的22端口是对应ssh的，另两个一个是对应TCP一个是IP协议，HTTP默认访问80端口
+  * 快速添加端口看快速添加数据库相关端口
+  * 手动添加可设置自己要用的端口(8010/8020指这个区间内可访问)，源这个选项一般0.0.0.0，指所有人可访问
+  
+* Nginx装到了/usr/local/nginx
+* > https://www.cnblogs.com/houbingxu2014025681/p/11181870.html
+* https://www.cnblogs.com/EasonJim/p/7806879.html
+

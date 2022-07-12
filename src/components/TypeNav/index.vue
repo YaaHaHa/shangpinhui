@@ -29,7 +29,7 @@
                   <!-- 每一个router-link都会生成一个组件对象，这太多了，就会卡顿 -->
                   <!-- <router-link :to="`/search?categoryName=${category.categoryName}&category1Id=${category.categoryId}`">{{category.categoryName}}</router-link> -->
                   <a
-                    href="javasctipt:;"
+                    href="javascript:void(0);"
                     :data-categoryName="category.categoryName"
                     :data-categoryId1="category.categoryId"
                     >{{ category.categoryName }}</a
@@ -45,7 +45,7 @@
                       <dt>
                         <!-- <router-link :to="`/search?categoryName=${categoryChild.categoryName}&category1Id=${categoryChild.categoryId}`">{{categoryChild.categoryName}}</router-link> -->
                         <a
-                          href="javasctipt:;"
+                          href="javascript:void(0);"
                           :data-categoryName="categoryChild.categoryName"
                           :data-categoryId2="categoryChild.categoryId"
                           >{{ categoryChild.categoryName }}</a
@@ -58,7 +58,7 @@
                         >
                           <!-- <router-link :to="`/search?categoryName=${categoryChild2.categoryName}&category1Id=${categoryChild2.categoryId}`">{{categoryChild2.categoryName}}</router-link> -->
                           <a
-                            href="javasctipt:;"
+                            href="javascript:void(0);"
                             :data-categoryName="categoryChild2.categoryName"
                             :data-categoryId3="categoryChild2.categoryId"
                             >{{ categoryChild2.categoryName }}</a
@@ -110,6 +110,7 @@ export default {
     // 跳转到Search页面
     toSearch(event) {
       const target = event.target;
+      console.log(target.dataset);
       // 注意获取data-categoryName自定义属性的数据要通过小写
       const { categoryname, categoryid1, categoryid2, categoryid3 } =
         target.dataset;

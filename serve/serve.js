@@ -162,7 +162,7 @@ app.post('/api/cart/addToCart/:skuId?/:skuNum?', (request, response) => {
     }).toString());  //读取出来的是二进制，记得转换一下再转成对象！！！
 
     // 读取购物车列表
-    let cart = json.parse(fs.readfilesync('./asset/data/shopcartlist.json', { flag: 'a+' }, function (err, data) {
+    let cart = JSON.parse(fs.readFileSync('./asset/data/ShopCartList.json', function (err, data) {
         if (err) {
             throw err;
         }

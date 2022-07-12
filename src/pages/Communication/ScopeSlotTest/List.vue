@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'List',
+  name:'List',
   props: {
     todos: Array
   }

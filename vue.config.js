@@ -1,7 +1,7 @@
 module.exports = {
     // lintOnSave: false, // 关闭ESLint的规则检查
     lintOnSave: 'warning', // 输出提示错误, 但项目继续运行
-
+    publicPath:'./',  // 在hash模式下避免打包空白页
     devServer:{    //只用于开发环境
       proxy:{     // 代理服务器
         '/api':{    //只对请求路径以/api开头的作代理转发
